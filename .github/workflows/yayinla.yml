@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 10
     env:
       PROJE: dijitalesnaf
+      HESAP_NO: ""   # Cloudflare hesap numarası (gizli değildir; panel adresinde görünür)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,9 +33,11 @@ jobs:
           set -euo pipefail
           if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then echo "::error::CLOUDFLARE_API_TOKEN adlı gizli bilgi eklenmemiş (Settings > Secrets and variables > Actions)"; exit 1; fi
           API=https://api.cloudflare.com/client/v4
-          HESAP="${HESAP_GIZLI:-}"
+          HESAP="${HESAP_GIZLI:-${HESAP_NO:-}}"
           if [ -z "$HESAP" ]; then
-            HESAP=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$API/accounts" | jq -r '.result[0].id // empty')
+            Y=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$API/accounts")
+            HESAP=$(echo "$Y" | jq -r '.result[0].id // empty')
+            [ -n "$HESAP" ] || echo "Hesap listesi alınamadı: $(echo "$Y" | jq -c '.errors')"
           fi
           if [ -z "$HESAP" ]; then echo "::error::Anahtarla Cloudflare hesabı bulunamadı. Anahtarı Account > Cloudflare Pages > Edit izniyle yeniden oluşturun ya da CLOUDFLARE_ACCOUNT_ID ekleyin."; exit 1; fi
           YANIT=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$API/accounts/$HESAP/pages/projects/$PROJE")
