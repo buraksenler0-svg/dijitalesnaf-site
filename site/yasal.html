@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F7F1E6">
+<script>/* uygulamadaki tema seçimi: aydınlık varsayılan */try{var t=localStorage.getItem("de-tema");if(t==="otomatik")t=matchMedia("(prefers-color-scheme: dark)").matches?"koyu":"acik";t=t==="koyu"?"koyu":"acik";document.documentElement.setAttribute("data-tema",t);document.querySelector('meta[name="theme-color"]').setAttribute("content",t==="koyu"?"#171412":"#F7F1E6")}catch(e){document.documentElement.setAttribute("data-tema","acik")}</script>
+<title>Yasal metinler · Digital Esnaf AI</title>
+<meta name="description" content="Digital Esnaf AI kullanım koşulları, KVKK aydınlatma metni, gizlilik ve çerez politikası, ön bilgilendirme formu, mesafeli satış sözleşmesi, iptal ve iade koşulları.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+<style>
+:root{--bg:#171412;--kart:#221E1B;--kart2:#29241F;--kart3:#322C26;--cizgi:#3A332C;--cizgi2:#463E35;--ayrac:#2E2823;--yazi:#F6EFE4;--yazi2:#E7DED0;--etiket:#DCD2C2;--soluk:#B3A795;--vurgu:#F07A6B;--vurgu-metin:#F59184;--vurgu-yazi:#1C1714;--vurgu-zemin2:#33201C;--men-on-cizgi:#5C342E;--sari-zemin:#3A3020;--sari-cizgi:#66532B;--sari-yazi:#FFE8B8;--logo:#F07A6B;--logo-ai:#F59184;--odak:#F59184;--bf:"Space Grotesk",Inter,system-ui,sans-serif;color-scheme:dark}
+:root[data-tema="acik"]{--bg:#F7F1E6;--kart:#FFFDF8;--kart2:#FBF7F0;--kart3:#F3ECDF;--cizgi:#E9DFCC;--cizgi2:#DDD1BB;--ayrac:#EFE7D8;--yazi:#1A1714;--yazi2:#2E2925;--etiket:#3D3630;--soluk:#6B6257;--vurgu:#C8402F;--vurgu-metin:#B5372A;--vurgu-yazi:#FFFFFF;--vurgu-zemin2:#FDF1ED;--men-on-cizgi:#F2C2B7;--sari-zemin:#FCEFD2;--sari-cizgi:#EBCD8E;--sari-yazi:#5F3E00;--logo:#E8604C;--logo-ai:#C8402F;--odak:#B5372A;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:16px}
+html,body{margin:0;background:var(--bg);color:var(--yazi);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:var(--vurgu-metin);text-underline-offset:2px}
+a:focus-visible{outline:2px solid var(--odak);outline-offset:2px;border-radius:4px}
+.kap{max-width:780px;margin:0 auto;padding:20px 16px 64px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.ust{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 24px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--yazi);text-decoration:none}
+.logo b{font-family:var(--bf);font-size:18px;letter-spacing:-.01em}
+.don{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:11px;border:1px solid var(--cizgi2);color:var(--yazi);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
+.don:hover{background:var(--kart3)}
+h1{font-family:var(--bf);font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:0 0 8px}
+.giris{color:var(--soluk);font-size:15px;margin:0 0 22px}
+.icindekiler{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px}
+.icindekiler a{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border-radius:14px;background:var(--kart);border:1px solid var(--cizgi);color:var(--yazi);text-decoration:none;font-size:14.5px;font-weight:600;line-height:1.3}
+.icindekiler a:hover{border-color:var(--cizgi2);background:var(--kart2)}
+.no{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;flex:none;background:var(--vurgu-zemin2);border:1px solid var(--men-on-cizgi);color:var(--vurgu-metin);font-size:13px;font-weight:700;font-family:var(--bf)}
+.belge{background:var(--kart);border:1px solid var(--cizgi);border-radius:20px;padding:22px 24px;margin:0 0 16px;scroll-margin-top:16px}
+.belge h2{display:flex;align-items:center;gap:12px;font-family:var(--bf);font-size:22px;line-height:1.25;letter-spacing:-.01em;margin:0 0 14px}
+.belge h2 .no{width:32px;height:32px;font-size:15px;border-radius:10px}
+.belge h3{font-size:16px;margin:22px 0 8px}
+.belge p,.belge li{font-size:15px;color:var(--yazi2)}
+.belge p{margin:0 0 12px}
+.belge ul,.belge ol{margin:0 0 12px;padding-left:22px}
+.belge li{margin:0 0 6px}
+.belge strong{color:var(--yazi)}
+.tablo{overflow-x:auto;margin:0 0 14px;border:1px solid var(--cizgi);border-radius:14px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--ayrac);color:var(--yazi2)}
+th{background:var(--kart2);color:var(--etiket);font-weight:600;font-size:13px}
+tr:last-child td{border-bottom:0}
+table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;background:var(--kart2)}
+.yururluk{font-size:13px!important;color:var(--soluk)!important;margin:16px 0 0!important}
+.basa{margin:6px 0 0!important;font-size:13px!important}
+.eksik{background:var(--sari-zemin);border:1px solid var(--sari-cizgi);color:var(--sari-yazi);border-radius:6px;padding:0 5px;font-size:.95em;white-space:nowrap}
+.alt{margin-top:28px;padding-top:18px;border-top:1px solid var(--cizgi);color:var(--soluk);font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.alt b{color:var(--yazi)}
+@media (max-width:560px){th,td{padding:9px 10px}table{font-size:13.5px}h1{font-size:27px}.belge{padding:18px 16px;border-radius:18px}.belge h2{font-size:19px}.ust .don span{display:none}}
+@media print{
+ :root,:root[data-tema="acik"]{--bg:#fff;--kart:#fff;--kart2:#f4f4f4;--yazi:#000;--yazi2:#111;--etiket:#222;--soluk:#444;--cizgi:#bbb;--ayrac:#ddd;--vurgu-metin:#000;color-scheme:light}
+ .ust .don,.icindekiler,.basa{display:none}
+ .belge{border:0;padding:0;margin:0 0 24px;break-inside:auto}
+ .tablo{overflow:visible}
+ a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<div class="kap">
+ <header class="ust"><a class="logo" href="/" aria-label="Digital Esnaf AI ana sayfa"><svg width="34" height="34" viewBox="0 0 36 36" fill="none" aria-hidden="true" style="color:var(--logo)"><rect x="1.5" y="1.5" width="33" height="33" rx="10" stroke="currentColor" stroke-width="2"/><path d="M8 15.5h20l-2.2-6H10.2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 15.5c0 1.9 1.5 3.2 3.3 3.2s3.4-1.3 3.4-3.2c0 1.9 1.5 3.2 3.3 3.2s3.3-1.3 3.3-3.2c0 1.9 1.5 3.2 3.4 3.2S28 17.4 28 15.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 19v8h14v-8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M27.5 3.6l1.1 2.7 2.7 1.1-2.7 1.1-1.1 2.7-1.1-2.7-2.7-1.1 2.7-1.1z" style="fill:var(--logo-ai)"/></svg><b>Digital Esnaf</b></a><a class="don" href="/">Uygulamaya dön<span>&nbsp;→</span></a></header>
+ <main>
+  <h1 id="icindekiler">Yasal metinler</h1>
+  <p class="giris">Digital Esnaf AI hizmetinin kullanımına, kişisel verilere ve ödemelere ilişkin metinler. Yürürlük tarihi 3 Kasım 2026. Soruların için <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a>.</p>
+  <nav aria-label="İçindekiler"><ol class="icindekiler"><li><a href="#kvkk"><span class="no">1</span><span>KVKK Aydınlatma Metni</span></a></li><li><a href="#gizlilik"><span class="no">2</span><span>Gizlilik, Çerez ve Yerel Depolama</span></a></li><li><a href="#kosullar"><span class="no">3</span><span>Kullanım Koşulları ve Abonelik Sözleşmesi</span></a></li><li><a href="#on-bilgilendirme"><span class="no">4</span><span>Ön Bilgilendirme Formu</span></a></li><li><a href="#mesafeli-satis"><span class="no">5</span><span>Mesafeli Satış Sözleşmesi</span></a></li><li><a href="#iade"><span class="no">6</span><span>İptal ve İade Koşulları</span></a></li><li><a href="#veri-isleme"><span class="no">7</span><span>Veri İşleme Taahhütnamesi</span></a></li><li><a href="#cihaz-alim"><span class="no">8</span><span>Cihaz Alımı Aydınlatma Metni</span></a></li></ol></nav>
+<section class="belge" id="kvkk" aria-labelledby="kvkk-b"><h2 id="kvkk-b"><span class="no">1</span>KVKK Aydınlatma Metni (kullanıcılar)</h2><p>Bu metin, Digital Esnaf AI'yı kullanan işletme sahiplerinin ve ekip üyelerinin kişisel verilerinin nasıl işlendiğini 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun (KVKK) 10. maddesi uyarınca açıklar.</p>
+<p><strong>Veri sorumlusu:</strong> Burak Şen ("Digital Esnaf AI"), <span class="eksik">adres yakında eklenecek</span>, <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a>.</p>
+<p>İşletmelerin uygulamaya girdiği kendi müşterilerine ait verilerin (servis müşterisi, cihaz alımı yapılan kişi, satış notu) veri sorumlusu ilgili işletmedir. Digital Esnaf AI bu verileri işletme adına veri işleyen olarak işler (<a href="#veri-isleme">Bölüm 7</a>).</p>
+<h3>İşlenen veriler</h3>
+<div class="tablo"><table>
+<thead>
+<tr>
+<th>Veri grubu</th>
+<th>Örnek</th>
+<th>Kimden</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kimlik</td>
+<td>Ad soyad, kullanıcı adı</td>
+<td>İşletme sahibi, ekip üyesi</td>
+</tr>
+<tr>
+<td>İletişim</td>
+<td>E-posta, telefon, işletme ve şube adresi</td>
+<td>İşletme sahibi</td>
+</tr>
+<tr>
+<td>Müşteri işlemi</td>
+<td>Paket, ödeme bildirimi, talep ve öneriler</td>
+<td>İşletme sahibi</td>
+</tr>
+<tr>
+<td>İşlem güvenliği</td>
+<td>Giriş kayıtları, IP adresi, oturum ve tarayıcı bilgisi</td>
+<td>Bütün kullanıcılar</td>
+</tr>
+<tr>
+<td>İşletme kayıtları</td>
+<td>Stok, satış, kasa, gider, servis, onay ve alım kayıtları; kaydı kimin girdiği</td>
+<td>İşletme sahibi, ekip üyesi</td>
+</tr>
+<tr>
+<td>Finans</td>
+<td>Ödeme tutarı ve tarihi. Kart bilgisi Digital Esnaf AI'da tutulmaz, ödeme kuruluşu işler</td>
+<td>İşletme sahibi</td>
+</tr>
+<tr>
+<td>Asistan yazışmaları</td>
+<td>Sorular ve cevaplar. Sohbet geçmişi yalnızca kullanıcının cihazında saklanır</td>
+<td>Asistanı kullanan</td>
+</tr>
+</tbody>
+</table></div>
+<h3>Amaçlar ve hukuki sebepler</h3>
+<div class="tablo"><table>
+<thead>
+<tr>
+<th>Amaç</th>
+<th>Hukuki sebep (KVKK m.5/2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hesap açma, giriş ve hizmetin sunulması</td>
+<td>Sözleşmenin kurulması ve ifası (c)</td>
+</tr>
+<tr>
+<td>Abonelik, ödeme ve fatura işlemleri</td>
+<td>Sözleşmenin ifası (c), hukuki yükümlülük (ç)</td>
+</tr>
+<tr>
+<td>Yapay zekâ asistanı ve kampanya metni hazırlama</td>
+<td>Sözleşmenin ifası (c)</td>
+</tr>
+<tr>
+<td>Güvenlik, kötüye kullanımın önlenmesi, işlem kayıtları</td>
+<td>Hukuki yükümlülük (ç), meşru menfaat (f)</td>
+</tr>
+<tr>
+<td>Talep, öneri ve destek</td>
+<td>Meşru menfaat (f)</td>
+</tr>
+<tr>
+<td>Hukuki uyuşmazlıklarda hakların korunması</td>
+<td>Bir hakkın tesisi, kullanılması veya korunması (e)</td>
+</tr>
+<tr>
+<td>Kampanya ve yenilik duyuruları</td>
+<td>Yalnızca onay verildiyse: açık rıza ve 6563 sayılı Kanun'a göre ticari ileti onayı</td>
+</tr>
+</tbody>
+</table></div>
+<p>Veriler uygulamadaki formlardan, giriş ekranından, kullanım sırasında otomatik olarak (oturum ve güvenlik kayıtları) ve ödeme kuruluşunun bildiriminden elektronik ortamda toplanır.</p>
+<h3>Aktarım</h3>
+<ul>
+<li><strong>Yurt içi:</strong> ödeme işlemleri için iyzico; muhasebe ve fatura için mali müşavir; talep halinde ve kanuni zorunluluk varsa yetkili kamu kurum ve kuruluşları.</li>
+<li><strong>Yurt dışı (hizmet sağlayıcılar):</strong> Supabase (veritabanı, giriş, dosya depolama; sunucular yurt dışında); Cloudflare (sitenin barındırılması ve güvenliği); Anthropic (yapay zekâ asistanı, ABD); Google Fonts (yazı tipinin yüklenmesi, IP adresi). Bu aktarımlar KVKK m.9 uyarınca standart sözleşme güvencesiyle yapılır.</li>
+<li>Asistana soru sorulduğunda soru, işletme kayıtlarının özetiyle birlikte yalnızca cevabı üretmek için Anthropic'e iletilir. Müdür ve personel için bu özette para bilgisi bulunmaz.</li>
+</ul>
+<h3>Saklama süresi</h3>
+<ul>
+<li>Hesap açık olduğu sürece saklanır.</li>
+<li>Hesap kapanınca işletme kayıtları 90 gün içinde silinir ya da anonim hale getirilir.</li>
+<li>Ödeme ve fatura kayıtları ilgili mevzuattaki süreler boyunca saklanır (ör. Vergi Usul Kanunu 5 yıl, Türk Ticaret Kanunu 10 yıl).</li>
+<li>Güvenlik kayıtları en fazla 2 yıl saklanır.</li>
+</ul>
+<h3>Hakların (KVKK m.11)</h3>
+<ol>
+<li>Kişisel verilerinin işlenip işlenmediğini öğrenme, işlendiyse bilgi isteme.</li>
+<li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme.</li>
+<li>Yurt içinde ve yurt dışında aktarıldığı kişileri bilme.</li>
+<li>Eksik ya da yanlış işlenmişse düzeltilmesini isteme.</li>
+<li>KVKK m.7'deki şartlarla silinmesini ya da yok edilmesini isteme.</li>
+<li>Düzeltme ve silme işlemlerinin aktarılan kişilere bildirilmesini isteme.</li>
+<li>Yalnızca otomatik sistemlerle yapılan analiz sonucu aleyhine bir sonuca itiraz etme.</li>
+<li>Kanuna aykırı işleme nedeniyle uğradığın zararın giderilmesini isteme.</li>
+</ol>
+<h3>Başvuru</h3>
+<p>Başvurunu <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresine sistemde kayıtlı e-posta adresinden, ıslak imzalı dilekçeyle posta adresimize (<span class="eksik">adres yakında eklenecek</span>) ya da KEP, güvenli elektronik imza veya mobil imzayla iletebilirsin. Başvurular en geç 30 gün içinde ücretsiz cevaplanır; işlem ayrıca bir maliyet gerektirirse Kurul'un belirlediği ücret alınabilir.</p>
+<p><strong>Ekip üyeleri için:</strong> Ekip hesabını işletme sahibi açar. Uygulamada yaptığın işlemler (satış, stok, cihaz alımı, onay istekleri) adınla birlikte işletme sahibine görünür.</p>
+<p class="yururluk">Yürürlük tarihi: 3 Kasım 2026</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="gizlilik" aria-labelledby="gizlilik-b"><h2 id="gizlilik-b"><span class="no">2</span>Gizlilik, Çerez ve Yerel Depolama Politikası</h2><p>Digital Esnaf AI reklam ya da takip çerezi kullanmaz; cihazında yalnızca uygulamanın çalışması için gereken bilgileri saklar. Bu bilgiler için onay istenmez, çünkü onlar olmadan uygulama çalışmaz.</p>
+<h3>Cihazında saklananlar</h3>
+<div class="tablo"><table>
+<thead>
+<tr>
+<th>Ne</th>
+<th>Neden</th>
+<th>Ne zaman silinir</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Oturum anahtarı</td>
+<td>Giriş yapmış kalman</td>
+<td>Çıkış yapınca; "Bilgilerimi hatırla" kapalıysa tarayıcı kapanınca</td>
+</tr>
+<tr>
+<td>Tema seçimi</td>
+<td>Aydınlık ya da karanlık görünüm</td>
+<td>Seçimi değiştirince ya da tarayıcı verilerini silince</td>
+</tr>
+<tr>
+<td>Giriş kolaylıkları</td>
+<td>Son kullanılan e-posta, işletme kodu, kullanıcı adı</td>
+<td>Tarayıcı verilerini silince</td>
+</tr>
+<tr>
+<td>Sepet ve seçili şube</td>
+<td>Yarım kalan satışın kaybolmaması</td>
+<td>Satış tamamlanınca ya da sepet boşaltılınca</td>
+</tr>
+<tr>
+<td>Asistan sohbeti (son 40 mesaj)</td>
+<td>Sohbete kaldığın yerden devam</td>
+<td>"Sohbeti temizle" ile</td>
+</tr>
+<tr>
+<td>Uygulama önbelleği (simgeler)</td>
+<td>Hızlı açılış</td>
+<td>Her güncellemede yenilenir</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ortak kullanılan bir bilgisayarda giriş yaparken "Bilgilerimi hatırla" işaretini kaldır. Bu işaret kapalıyken 30 dakika işlem yapılmazsa uygulama o cihazda kendiliğinden çıkış yapar.</p>
+<h3>Üçüncü taraflar</h3>
+<ul>
+<li><strong>Google Fonts:</strong> yazı tipi yüklenirken IP adresin Google'a iletilir.</li>
+<li><strong>Cloudflare:</strong> site Cloudflare üzerinden sunulur; Cloudflare güvenlik amacıyla zorunlu bir çerez kullanabilir.</li>
+<li><strong>Ödeme sayfası:</strong> kartla ödemede iyzico'nun güvenli sayfası açılır; o sayfanın çerezleri ödeme kuruluşunun kendi politikasına tabidir.</li>
+</ul>
+<h3>Verilerini nasıl koruyoruz</h3>
+<ul>
+<li>Şifreler geri çözülemeyecek biçimde saklanır; kimse, Digital Esnaf AI de dahil, şifreni göremez.</li>
+<li>Bütün bağlantılar şifrelidir (HTTPS).</li>
+<li>Her işletme yalnızca kendi kayıtlarını görebilir; bu kural ekranda değil, veritabanının kendisinde uygulanır.</li>
+<li>Müdür, personel ve teknik servis yalnızca görevinin gerektirdiği bilgileri görür; müdür ve personel ciro, kâr ve gelir-gider bilgisine erişemez.</li>
+<li>İmzalı formlar ve hasar fotoğrafları herkese kapalı klasörde durur ve yalnızca 5 dakika geçerli bağlantıyla açılır.</li>
+<li>Kart bilgileri Digital Esnaf AI'ya hiç gelmez; ödeme kuruluşunun 3D Secure sayfasında girilir.</li>
+<li>Şifre değiştirildiğinde ya da bir ekip üyesinin görevi değiştiğinde açık oturumlar kapatılır.</li>
+</ul>
+<p>Bu politika değişince güncel sürümü burada yayımlanır; önemli değişiklikler uygulama içinde duyurulur. Soruların için: <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a>.</p>
+<p class="yururluk">Yürürlük tarihi: 3 Kasım 2026</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="kosullar" aria-labelledby="kosullar-b"><h2 id="kosullar-b"><span class="no">3</span>Kullanım Koşulları ve Abonelik Sözleşmesi</h2><p>Bu sözleşme, Digital Esnaf AI hizmetini sunan Burak Şen ("Sağlayıcı") ile uygulamaya kayıt olan işletme ("Abone") arasında, kayıt sırasında onay kutusunun işaretlenmesiyle kurulur.</p>
+<p><strong>1. Konu.</strong> Sağlayıcı, Abone'ye internet üzerinden stok, satış, kasa, muhasebe, teknik servis, ekip, cihaz alımı ve yapay zekâ asistanı hizmetini abonelik usulüyle sunar.</p>
+<p><strong>2. Hesap ve güvenlik.</strong></p>
+<ul>
+<li>Abone kayıtta doğru bilgi verir ve bilgileri güncel tutar.</li>
+<li>Şifrelerin gizli tutulması Abone'nin ve ekip üyelerinin sorumluluğundadır. Abone, açtığı ekip hesaplarıyla yapılan işlemlerden sorumludur.</li>
+<li>Yetkisiz bir kullanım fark edilirse Abone şifresini değiştirir ve <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresine hemen bildirir.</li>
+</ul>
+<p><strong>3. Paketler ve ücret.</strong></p>
+<ul>
+<li>Standart paket aylık 229 TL, Pro paket aylık 399 TL'dir; güncel fiyat "Paket ve ödeme" sayfasında yazar.</li>
+<li>Yeni işletmeler 14 gün ücretsiz dener; deneme sonunda ödeme yapılmazsa hiçbir ücret alınmaz.</li>
+<li>Fiyat değişiklikleri en az 30 gün önce uygulama içinde duyurulur; ödenmiş dönem etkilenmez.</li>
+</ul>
+<p><strong>4. Ödeme ve yenileme.</strong></p>
+<ul>
+<li>Ücret aylık ve peşin ödenir: kartla iyzico üzerinden ya da havale/EFT ile.</li>
+<li>Otomatik çekim yoktur; abonelik, Abone her ay ödeme yaptıkça uzar.</li>
+<li>Süre dolunca kayıtlar silinmez; yalnızca ödeme ve destek sayfaları açık kalır, ekip hesapları giriş yapamaz. Ödeme yapılınca hesap kaldığı yerden açılır.</li>
+</ul>
+<p><strong>5. Abone'nin verileri.</strong></p>
+<ul>
+<li>Uygulamaya girilen işletme kayıtları Abone'ye aittir. Sağlayıcı bu kayıtları yalnızca hizmeti sunmak için işler; satmaz, reklam için kullanmaz.</li>
+<li>Abone'nin kendi müşterilerine ait verilerin veri sorumlusu Abone'dir; tarafların bu verilerle ilgili yükümlülükleri Veri İşleme Taahhütnamesi'ndedir (<a href="#veri-isleme">Bölüm 7</a>).</li>
+<li>Abone, kayıtlarının bir kopyasını <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresinden isteyebilir; raporlar uygulamadan CSV olarak indirilebilir.</li>
+</ul>
+<p><strong>6. Yapay zekâ asistanı.</strong></p>
+<ul>
+<li>Asistanın cevapları otomatik üretilir ve hatalı olabilir. Mali, vergisel ya da hukuki kararlar yalnızca asistanın cevabına dayanılarak verilmemelidir.</li>
+<li>Soru sorulduğunda soru, işletme kayıtlarının özetiyle birlikte yapay zekâ sağlayıcısına iletilir (<a href="#kvkk">Bölüm 1</a>).</li>
+<li>Aylık soru hakkı pakete göre sınırlıdır.</li>
+</ul>
+<p><strong>7. Kullanım kuralları.</strong> Abone ve ekibi:</p>
+<ul>
+<li>Hizmeti yasalara aykırı amaçla kullanmaz; başkasına ait verileri hukuka aykırı biçimde girmez.</li>
+<li>Sisteme saldırmaz, açık aramaz, otomatik toplu sorgu yapmaz, başka bir işletmenin verisine erişmeye çalışmaz.</li>
+<li>Cihaz alımında cihazın satıcıya ait olduğunu ve çalıntı ya da kayıp olmadığını kontrol eder; bu kontrolün sorumluluğu Abone'dedir.</li>
+<li>Kampanya mesajlarını yalnızca ileti izni (İYS) bulunan müşterilerine gönderir.</li>
+</ul>
+<p><strong>8. Hizmetin sürekliliği.</strong> Sağlayıcı hizmeti kesintisiz sunmak için makul çabayı gösterir; bakım, altyapı sağlayıcılarındaki arızalar ve mücbir sebeplerden doğan kesintiler olabilir. Planlı bakımlar mümkünse önceden duyurulur.</p>
+<p><strong>9. Sorumluluğun sınırı.</strong> Sağlayıcı, kastı ya da ağır kusuru olmadıkça dolaylı zararlardan ve kazanç kaybından sorumlu tutulamaz. Sağlayıcının toplam sorumluluğu, zararın doğduğu tarihten önceki 12 ayda Abone'nin ödediği toplam ücretle sınırlıdır. Tüketicilerin kanundan doğan hakları saklıdır.</p>
+<p><strong>10. Fesih.</strong></p>
+<ul>
+<li>Abone, ödemeyi yenilemeyerek aboneliğini istediği zaman sona erdirebilir.</li>
+<li>Sağlayıcı, bu koşullara ağır aykırılıkta hesabı askıya alabilir ya da sözleşmeyi feshedebilir; durumu Abone'ye bildirir.</li>
+<li>Sözleşme sona erince Abone 30 gün içinde kayıtlarının kopyasını isteyebilir; kayıtlar 90 gün içinde silinir ya da anonim hale getirilir. Mevzuat gereği saklanması gereken ödeme kayıtları hariçtir.</li>
+</ul>
+<p><strong>11. Değişiklikler.</strong> Koşullar değiştiğinde yeni metin en az 15 gün önce uygulama içinde ya da e-postayla duyurulur. Abone değişikliği kabul etmezse aboneliğini yenilemeyebilir.</p>
+<p><strong>12. Uygulanacak hukuk ve yetki.</strong> Türkiye Cumhuriyeti hukuku uygulanır. Uyuşmazlıklarda Sağlayıcının yerleşim yerindeki mahkemeler ve icra daireleri yetkilidir. Tüketicilerin Tüketici Hakem Heyeti ve Tüketici Mahkemesine başvurma hakları saklıdır.</p>
+<p><strong>13. Bildirimler.</strong> Taraflar arasındaki bildirimler uygulama içinden ya da Abone'nin kayıtlı e-posta adresiyle <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresi üzerinden yapılır.</p>
+<p class="yururluk">Yürürlük tarihi: 3 Kasım 2026</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="on-bilgilendirme" aria-labelledby="on-bilgilendirme-b"><h2 id="on-bilgilendirme-b"><span class="no">4</span>Ön Bilgilendirme Formu</h2><p>Bu form, ödeme yapmadan önce satın alınan hizmeti, fiyatını ve haklarını açıklar; Mesafeli Sözleşmeler Yönetmeliği uyarınca ödeme ekranında gösterilir ve onaylanır.</p>
+<h3>Hizmet sağlayıcı</h3>
+<div class="tablo"><table class="cift">
+
+<tbody>
+<tr>
+<td>Ad soyad / unvan</td>
+<td>Burak Şen</td>
+</tr>
+<tr>
+<td>Adres</td>
+<td><span class="eksik">Yakında eklenecek</span></td>
+</tr>
+<tr>
+<td>Telefon</td>
+<td><a href="tel:+905424081609">0542 408 16 09</a></td>
+</tr>
+<tr>
+<td>E-posta</td>
+<td><a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a></td>
+</tr>
+<tr>
+<td>İnternet sitesi</td>
+<td><a href="https://digitalesnaf.com">digitalesnaf.com</a></td>
+</tr>
+</tbody>
+</table></div>
+<h3>Hizmet ve fiyat</h3>
+<div class="tablo"><table>
+<thead>
+<tr>
+<th>Paket</th>
+<th>İçerik</th>
+<th>Aylık fiyat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standart</td>
+<td>Stok, kasa, satış, muhasebe, teknik servis ve AI asistan; tek şube</td>
+<td>229 TL</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>Standart'taki her şey, çoklu şube, ekip hesapları ve onay sistemi, raporlar, kampanyalar</td>
+<td>399 TL</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>Fiyatlara KDV eklenmez; ödeme kuruluşunun komisyonu alıcıdan ayrıca alınmaz.</li>
+<li>Abonelik dönemi 1 aydır ve otomatik yenilenmez.</li>
+</ul>
+<h3>Ödeme ve ifa</h3>
+<ul>
+<li>Ödeme, iyzico'nun güvenli sayfasında kredi kartı ya da banka kartıyla 3D Secure doğrulamasıyla, veya havale/EFT ile yapılır.</li>
+<li>Hizmet elektronik ortamda sunulur. Ödeme onaylanınca abonelik hemen başlar ya da 1 ay uzar.</li>
+</ul>
+<h3>Cayma hakkı</h3>
+<p>Hizmet elektronik ortamda anında ifa edildiği için Mesafeli Sözleşmeler Yönetmeliği m.15/1-ğ uyarınca cayma hakkı yoktur. Alıcı, ödeme ekranında hizmetin hemen başlamasını onaylar. Sağlayıcının gönüllü iade koşulları <a href="#iade">Bölüm 6</a>'dadır.</p>
+<h3>Şikâyet ve itiraz</h3>
+<p>Şikâyetlerini <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresine iletebilirsin. Tüketiciler, Ticaret Bakanlığının her yıl belirlediği parasal sınırlar içinde Tüketici Hakem Heyetine, sınırı aşan uyuşmazlıklarda Tüketici Mahkemesine başvurabilir.</p>
+<p>Kişisel verilerin işlenmesi için <a href="#kvkk">Bölüm 1</a>'e, çerezler için <a href="#gizlilik">Bölüm 2</a>'ye bak. Hizmeti ticari ya da mesleki amaçla satın alan işletmeler için tüketici mevzuatı uygulanmaz; Kullanım Koşulları geçerlidir.</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="mesafeli-satis" aria-labelledby="mesafeli-satis-b"><h2 id="mesafeli-satis-b"><span class="no">5</span>Mesafeli Satış Sözleşmesi</h2><p>Bu sözleşme, alıcı ödeme ekranında onay kutusunu işaretleyip ödemeyi tamamladığında kurulur; 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği'ne tabidir.</p>
+<p><strong>Madde 1. Taraflar.</strong></p>
+<ul>
+<li>Sağlayıcı: Burak Şen, <span class="eksik">adres yakında eklenecek</span>, <a href="tel:+905424081609">0542 408 16 09</a>, <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a>.</li>
+<li>Alıcı: Digital Esnaf AI'ya kayıtlı işletmenin yöneticisi; adı, e-postası ve işletme bilgileri hesabındaki gibidir.</li>
+</ul>
+<p><strong>Madde 2. Konu.</strong> Alıcının ödeme ekranında seçtiği paketin (Standart ya da Pro) 1 aylık abonelik hizmetinin sunulması ve bedelinin ödenmesidir. Paketlerin içeriği ve fiyatı Ön Bilgilendirme Formu'ndadır (<a href="#on-bilgilendirme">Bölüm 4</a>).</p>
+<p><strong>Madde 3. Bedel ve ödeme.</strong> Bedel, ödeme ekranında gösterilen tutardır ve tek seferde peşin ödenir. Kartla ödemeler iyzico aracılığıyla yapılır; kart bilgileri Sağlayıcı'ya iletilmez.</p>
+<p><strong>Madde 4. İfa.</strong> Hizmet elektronik ortamda sunulur. Ödeme onaylanınca abonelik hemen başlar ya da 1 ay uzar; alıcı mevcut hesabıyla kullanmaya devam eder.</p>
+<p><strong>Madde 5. Cayma hakkı.</strong> Hizmet alıcının onayıyla elektronik ortamda anında ifa edildiğinden Mesafeli Sözleşmeler Yönetmeliği m.15/1-ğ uyarınca cayma hakkı kullanılamaz. Sağlayıcının gönüllü iade koşulları saklıdır (<a href="#iade">Bölüm 6</a>).</p>
+<p><strong>Madde 6. Tarafların yükümlülükleri.</strong> Hizmetin kullanımına ilişkin haklar ve yükümlülükler Kullanım Koşulları ve Abonelik Sözleşmesi'ndedir (<a href="#kosullar">Bölüm 3</a>).</p>
+<p><strong>Madde 7. Kişisel veriler.</strong> Alıcının kişisel verileri KVKK Aydınlatma Metni'ne (<a href="#kvkk">Bölüm 1</a>) uygun işlenir.</p>
+<p><strong>Madde 8. Uyuşmazlık.</strong> Tüketiciler, Ticaret Bakanlığının ilan ettiği parasal sınırlar içinde yerleşim yerlerindeki ya da işlemi yaptıkları yerdeki Tüketici Hakem Heyetine, sınırı aşan uyuşmazlıklarda Tüketici Mahkemesine başvurabilir. Ticari amaçla satın alan alıcılarla uyuşmazlıklarda Sağlayıcının yerleşim yerindeki mahkemeler ve icra daireleri yetkilidir.</p>
+<p><strong>Madde 9. Yürürlük ve saklama.</strong> Alıcı, Ön Bilgilendirme Formu'nu ve bu sözleşmeyi okuduğunu ve onayladığını ödeme ekranında beyan eder. Sözleşme ve form, alıcının hesabından her zaman erişilebilir biçimde saklanır.</p>
+<p class="yururluk">Yürürlük tarihi: 3 Kasım 2026</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="iade" aria-labelledby="iade-b"><h2 id="iade-b"><span class="no">6</span>İptal ve İade Koşulları</h2><p>Ödenen dönem hemen başladığı için yasal cayma hakkı yoktur; Digital Esnaf AI yine de aşağıdaki durumlarda ücreti iade eder.</p>
+<h3>İptal</h3>
+<ul>
+<li>14 günlük deneme ücretsizdir; deneme sonunda ödeme yapmazsan hiçbir ücret alınmaz.</li>
+<li>Otomatik çekim yoktur. Ödemeyi yenilemediğinde abonelik dönem sonunda kendiliğinden biter; ayrıca iptal etmen gerekmez.</li>
+<li>Pro'dan Standart'a geçiş bir sonraki dönemden geçerli olur.</li>
+</ul>
+<h3>İade</h3>
+<div class="tablo"><table>
+<thead>
+<tr>
+<th>Durum</th>
+<th>İade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aynı dönem için yanlışlıkla birden fazla ödeme</td>
+<td>Fazla ödenen tutarın tamamı</td>
+</tr>
+<tr>
+<td>Ödemeden sonraki 7 gün içinde, o dönemde hizmet kullanılmadıysa</td>
+<td>Ödenen tutarın tamamı</td>
+</tr>
+<tr>
+<td>Digital Esnaf AI'dan kaynaklanan ve 72 saati aşan kesinti</td>
+<td>Kesintideki gün sayısı kadar süre uzatımı ya da o günlerin bedeli</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>İade, ödemenin yapıldığı karta ya da hesaba, talebin onaylanmasından sonra 10 iş günü içinde yapılır; tutarın hesabına yansıma süresi bankana bağlıdır.</li>
+<li>İade talebini <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresine ya da uygulamadaki "İstek ve öneri" sayfasından, işletme kodunu yazarak iletebilirsin.</li>
+</ul>
+<p class="yururluk">Yürürlük tarihi: 3 Kasım 2026</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="veri-isleme" aria-labelledby="veri-isleme-b"><h2 id="veri-isleme-b"><span class="no">7</span>Veri İşleme Taahhütnamesi</h2><p>Aboneler kendi müşterilerinin verilerini (servis kaydı, cihaz alımı, satış notu) uygulamaya girer; bu verilerin veri sorumlusu Abone, veri işleyeni Digital Esnaf AI'dır (KVKK m.3 ve m.12). Bu taahhütname Kullanım Koşulları'nın eki sayılır.</p>
+<h3>Digital Esnaf AI'nın taahhütleri</h3>
+<ul>
+<li>Verileri yalnızca Abone adına ve hizmeti sunmak için işler; başka amaçla kullanmaz, satmaz, paylaşmaz.</li>
+<li>Verilere yalnızca hizmeti yürütmek için gerektiğinde ve gizlilik yükümlülüğü altında erişilir.</li>
+<li>KVKK m.12'ye uygun teknik ve idari tedbirleri alır: şifreli bağlantı, veritabanında işletme ve görev bazında yetki kontrolü, şifrelerin geri çözülemez saklanması, belgelerin herkese kapalı klasörde süreli bağlantıyla açılması.</li>
+<li>Bir veri ihlalini öğrenince Abone'yi gecikmeksizin bilgilendirir; Abone'nin Kurul'a ve ilgili kişilere bildirim yapabilmesi için gereken bilgiyi verir. Veri sorumlusu ihlali Kurul'a en geç 72 saat içinde bildirir.</li>
+<li>Digital Esnaf AI'ya gelen ilgili kişi başvurularını Abone'ye yönlendirir ve cevap için teknik destek verir.</li>
+<li>Abonelik sona erince verileri 90 gün içinde siler ya da anonim hale getirir; Abone isterse önce bir kopyasını verir.</li>
+</ul>
+<h3>Alt işleyenler</h3>
+<div class="tablo"><table>
+<thead>
+<tr>
+<th>Sağlayıcı</th>
+<th>Ne için</th>
+<th>Konum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supabase</td>
+<td>Veritabanı, giriş, belge ve fotoğraf depolama</td>
+<td>Yurt dışı</td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td>Sitenin barındırılması ve güvenliği</td>
+<td>Küresel ağ</td>
+</tr>
+<tr>
+<td>Anthropic</td>
+<td>Yapay zekâ asistanı (yalnızca soru sorulduğunda)</td>
+<td>ABD</td>
+</tr>
+<tr>
+<td>iyzico</td>
+<td>Abonelik ödemeleri</td>
+<td>Türkiye</td>
+</tr>
+</tbody>
+</table></div>
+<p>Yeni bir alt işleyen eklenirse bu liste güncellenir ve Abone'ye uygulama içinde duyurulur. Yurt dışı aktarımlar KVKK m.9'daki standart sözleşme güvencesiyle yapılır.</p>
+<h3>Abone'nin yükümlülükleri</h3>
+<ul>
+<li>Müşterilerini kişisel verilerinin işlenmesi konusunda aydınlatır (cihaz alımı için <a href="#cihaz-alim">Bölüm 8</a>'deki metin onay sayfasında kendiliğinden gösterilir).</li>
+<li>Uygulamaya yalnızca işi için gerekli verileri girer; sağlık, din, biyometrik gibi özel nitelikli verileri girmez.</li>
+<li>Kampanya mesajları için müşterilerinden ileti izni alır ve İYS'ye kaydeder.</li>
+<li>Ekip üyelerine yalnızca görevlerine uygun erişim verir ve ayrılan kişilerin hesabını kapatır.</li>
+</ul>
+<p class="yururluk">Yürürlük tarihi: 3 Kasım 2026</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+<section class="belge" id="cihaz-alim" aria-labelledby="cihaz-alim-b"><h2 id="cihaz-alim-b"><span class="no">8</span>Cihaz Alımı KVKK Aydınlatma Metni</h2><p>Bu metin, cihazını işletmeye satan kişinin onay sayfasında ve alım formunda gösterilir; veri sorumlusu cihazı satın alan işletmedir.</p>
+<p><strong>Veri sorumlusu:</strong> cihazı satın alan işletme. İşletmenin adı, adresi ve telefonu onay sayfasında ve alım formunda yazılıdır.</p>
+<p><strong>İşlenen veriler:</strong> ad soyad, cep telefonu; cihazın markası, modeli, IMEI numarası, hafızası, rengi, pil sağlığı, hasarı ve hasar fotoğrafları; alış bedeli ve ödeme şekli; onayın zamanı, onayın verildiği IP adresi ve tarayıcı bilgisi; imzalı formun görüntüsü.</p>
+<p><strong>Amaç ve hukuki sebep:</strong></p>
+<ul>
+<li>Alım-satım sözleşmesinin kurulması, ifası ve belgelenmesi (KVKK m.5/2-c).</li>
+<li>Muhasebe, vergi ve ikinci el cihaz ticaretine ilişkin yasal yükümlülüklerin yerine getirilmesi (m.5/2-ç).</li>
+<li>Cihazın sahipliği ya da durumu hakkında doğabilecek uyuşmazlıklarda hakların korunması (m.5/2-e).</li>
+</ul>
+<p><strong>Aktarım:</strong></p>
+<ul>
+<li>Talep halinde ve kanuni zorunluluk varsa kolluk, adli makamlar ve diğer yetkili kamu kurumlarına.</li>
+<li>İşletmenin mali müşavirine (muhasebe kayıtları).</li>
+<li>Kayıtların tutulduğu uygulamayı sunan Digital Esnaf AI'ya ve onun altyapı sağlayıcılarına; bunların bir kısmı yurt dışındadır ve aktarım KVKK m.9'daki güvencelerle yapılır.</li>
+<li>Onay bağlantısı size WhatsApp üzerinden gönderilir; bu mesaj WhatsApp'ın (Meta) kendi gizlilik koşullarına tabidir.</li>
+</ul>
+<p><strong>Saklama süresi:</strong> ilgili mevzuattaki süreler boyunca, en fazla 10 yıl; süre dolunca silinir ya da anonim hale getirilir.</p>
+<p><strong>Haklarınız:</strong> KVKK m.11'deki haklarınızı (bilgi isteme, düzeltme, silme, itiraz, zararın giderilmesi) kullanmak için cihazı sattığınız işletmeye telefonla ya da adresine yazılı olarak başvurabilirsiniz.</p><p class="basa"><a href="#icindekiler">Başa dön</a></p></section>
+ </main>
+ <footer class="alt"><b>Digital Esnaf AI</b><span>Hizmet sağlayıcı: Burak Şen · <span class="eksik">Adres yakında eklenecek</span></span><span><a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> · <a href="tel:+905424081609">0542 408 16 09</a></span></footer>
+</div>
+</body>
+</html>

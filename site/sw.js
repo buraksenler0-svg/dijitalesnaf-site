@@ -1,7 +1,7 @@
-// Dijital Esnaf AI · service worker
+// Digital Esnaf AI · service worker
 // Sayfaları (navigasyon) hiç yakalamaz: her açılışta en güncel sürüm gelir.
 // Yalnızca ikonları ve manifest dosyasını ağ öncelikli önbelleğe alır; veri isteklerine hiç dokunmaz.
-const CACHE='dijital-esnaf-v5';
+const CACHE='digital-esnaf-v6';
 self.addEventListener('install',e=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil((async()=>{
   const adlar=await caches.keys();

@@ -1,4 +1,4 @@
-# Dijital Esnaf AI · site
+# Digital Esnaf AI · site
 
 `site/` klasöründeki dosyalar her güncellemede Cloudflare Pages'teki **dijitalesnaf** projesine kendiliğinden yüklenir
 (`.github/workflows/yayinla.yml`). Sonucu **Actions** sekmesinden görebilirsiniz.

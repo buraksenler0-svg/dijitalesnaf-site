@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F7F1E6">
 <script>/* tema ilk boyamadan önce: aydınlık varsayılan */try{var t=localStorage.getItem("de-tema");if(t==="otomatik")t=matchMedia("(prefers-color-scheme: dark)").matches?"koyu":"acik";t=t==="koyu"?"koyu":"acik";document.documentElement.setAttribute("data-tema",t);document.querySelector('meta[name="theme-color"]').setAttribute("content",t==="koyu"?"#171412":"#F7F1E6")}catch(e){document.documentElement.setAttribute("data-tema","acik")}</script>
-<meta name="description" content="Dijital Esnaf AI: stok, kasa, muhasebe, teknik servis ve yapay zekâ asistanı tek yerde.">
-<title>Dijital Esnaf AI</title>
+<meta name="description" content="Digital Esnaf AI: stok, kasa, muhasebe, teknik servis ve yapay zekâ asistanı tek yerde.">
+<title>Digital Esnaf AI</title>
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Dijital Esnaf">
+<meta name="apple-mobile-web-app-title" content="Digital Esnaf">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
@@ -476,6 +476,29 @@ button.urun:disabled{opacity:.5;cursor:not-allowed}
 .mo-sonuc.red{background:var(--tehlike-zemin);border-color:transparent}.mo-sonuc.red .ik,.mo-sonuc.red b{color:var(--tehlike)}
 @media(max-width:1000px){.alim-duzen{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.onay-satir{flex-wrap:nowrap}.onay-satir .tutar{font-size:14px}}
+/* v0.9: kısa başlarken şeridi, onay kutuları, yasal bağlantılar */
+.baslarken{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:12px 14px 12px 18px;border-radius:16px}
+.bl-ust{display:flex;align-items:center;gap:10px;flex:1 1 220px;min-width:0}
+.bl-ust b{font-size:15px;white-space:nowrap}
+.bl-sayi{font-size:13px;font-weight:700;color:var(--vurgu-metin);font-variant-numeric:tabular-nums}
+.bl-cubuk{flex:1 1 auto;max-width:180px;height:6px;border-radius:999px;background:var(--kart3);overflow:hidden}
+.bl-cubuk i{display:block;height:100%;border-radius:inherit;background:var(--vurgu)}
+.bl-adimlar{display:flex;flex-wrap:wrap;gap:8px}
+.bl-adim{min-height:36px;padding:0 10px 0 14px;border-radius:999px;border:1px solid var(--cizgi2);background:var(--kart2);color:var(--yazi);font:inherit;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.bl-adim:hover{background:var(--kart3)}
+.bl-adim .ik{width:16px;height:16px;color:var(--soluk)}
+@media(max-width:560px){.bl-adimlar{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -14px 0 0;padding-right:14px}.bl-adimlar::-webkit-scrollbar{display:none}.bl-adim{flex:none}}
+.onay.metin{align-items:flex-start;font-weight:500;font-size:14px;line-height:1.45;color:var(--yazi2)}
+.onay.metin input{margin-top:1px}
+.onaylar{display:flex;flex-direction:column;gap:12px}
+.yasal-alt{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 14px;margin:0;font-size:12.5px}
+.yasal-alt a{color:var(--soluk);text-underline-offset:2px}
+.ai-not{margin:0;text-align:center;font-size:11.5px;color:var(--soluk)}
+.ai-not a{color:inherit}
+.mo-aydinlatma{border:1px solid var(--cizgi);border-radius:14px;background:var(--kart);font-size:13px;line-height:1.55;color:var(--yazi2)}
+.mo-aydinlatma summary{cursor:pointer;padding:10px 14px;font-weight:600;color:var(--vurgu-metin);font-size:13.5px}
+.mo-aydinlatma>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:8px}
+.mo-aydinlatma p,.mo-aydinlatma ul{margin:0}.mo-aydinlatma ul{padding-left:18px}.mo-aydinlatma li+li{margin-top:2px}
 </style>
 </head>
 <body>
@@ -487,12 +510,13 @@ button.urun:disabled{opacity:.5;cursor:not-allowed}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
-/* ═══════════ Dijital Esnaf AI · Aşama 2: hesaplar, işletmeler, ekip ═══════════ */
+/* ═══════════ Digital Esnaf AI · Aşama 2: hesaplar, işletmeler, ekip ═══════════ */
 const SUPABASE_URL='https://ycpssbeotoyobpazigeg.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHNzYmVvdG95b2JwYXppZ2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzOTU2ODAsImV4cCI6MjEwODk3MTY4MH0.WmIS8jrNBdxGaxPffo1-1ctEunJp7bz7-QgGGjaT3lc';
 const KURULU=!SUPABASE_URL.startsWith('BURAYA')&&!SUPABASE_KEY.startsWith('BURAYA');
 const CALISAN_ALAN='calisan.dijitalesnaf.app';
-const SURUM='0.8';
+const SURUM='0.9';
+const YASAL_SURUM='2026-11-03';   // kullanıcının onayladığı yasal metinlerin sürümü (yasal.html yürürlük tarihi)
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -552,7 +576,7 @@ const P={
 };
 const ik=(n,c)=>`<svg class="ik${c?' '+c:''}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${P[n]||''}</svg>`;
 const LOGO=(b=38)=>`<svg width="${b}" height="${b}" viewBox="0 0 36 36" fill="none" aria-hidden="true" style="color:var(--logo)"><rect x="1.5" y="1.5" width="33" height="33" rx="10" stroke="currentColor" stroke-width="2"/><path d="M8 15.5h20l-2.2-6H10.2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 15.5c0 1.9 1.5 3.2 3.3 3.2s3.4-1.3 3.4-3.2c0 1.9 1.5 3.2 3.3 3.2s3.3-1.3 3.3-3.2c0 1.9 1.5 3.2 3.4 3.2S28 17.4 28 15.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 19v8h14v-8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M27.5 3.6l1.1 2.7 2.7 1.1-2.7 1.1-1.1 2.7-1.1-2.7-2.7-1.1 2.7-1.1z" style="fill:var(--logo-ai)"/></svg>`;
-const LOGO_TAM=(b=40)=>`<span class="logo">${LOGO(b)}<span class="ad"><b>Dijital Esnaf</b><span>YAPAY ZEKÂ</span></span></span>`;
+const LOGO_TAM=(b=40)=>`<span class="logo">${LOGO(b)}<span class="ad"><b>Digital Esnaf</b><span>YAPAY ZEKÂ</span></span></span>`;
 
 /* ---------- küçük yardımcılar ---------- */
 let bildirimT=0;
@@ -582,8 +606,10 @@ function sbTemizle(st){try{Object.keys(st).filter(k=>/^sb-.+-auth-token/.test(k)
 // Yeni tip "publishable" anahtar (eyJ ile başlamayan) Authorization başlığına konmaz
 const anahtarFetch=(u,o={})=>{if(!SUPABASE_KEY.startsWith('eyJ')){const h=new Headers(o.headers||{});if(h.get('Authorization')==='Bearer '+SUPABASE_KEY){h.delete('Authorization');o={...o,headers:h}}}return fetch(u,o)};
 function istemci(h){sbTemizle(h?window.sessionStorage:window.localStorage);return supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{global:{fetch:anahtarFetch},auth:{storage:h?window.localStorage:window.sessionStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}
-let sb=null,BEN=null,ROL=null,ISL=null,EKIP=null,OZET=null;
-let FIYAT={standart:229,pro:499};
+let sb=null,BEN=null,ROL=null,ISL=null,EKIP=null,OZET=null,HESAP={eposta:'',meta:{}};
+// Yasal metin bağlantısı (yeni sekmede açılır)
+const YASAL=(h,a)=>`<a href="/yasal.html${h?'#'+h:''}" target="_blank" rel="noopener">${a}</a>`;
+let FIYAT={standart:229,pro:399};
 const fiyatYaz=n=>(+n||0).toLocaleString('tr-TR',{maximumFractionDigits:2})+' TL';
 const proMu=()=>!BEN||BEN.pro!==false;
 const aboneMu=()=>!BEN||BEN.abone!==false;
@@ -599,7 +625,7 @@ const seciliPaket=()=>{const r=document.querySelector('input[name=kPlan]:checked
 
 /* ═══════════ GİRİŞ / KAYIT ═══════════ */
 let girisSekme=lsG('de-sekme')||'yonetici',girisMod='giris';
-function solPanel(){return `<section class="g-sol" aria-label="Dijital Esnaf AI">${LOGO_TAM(44)}
+function solPanel(){return `<section class="g-sol" aria-label="Digital Esnaf AI">${LOGO_TAM(44)}
  <div style="display:flex;flex-direction:column;gap:18px;position:relative;z-index:1"><h1>İşletmeni yönet.<br><em>Geleceğini</em> yapay zekâya bırak.</h1><p>Stok, kasa, muhasebe ve teknik servis tek yerde. Asistanın kayıtlarına bakar, ne kazandığını ve ne yapman gerektiğini söyler.</p></div>
  <div class="g-balon"><span class="ai-ic">${ik('yildiz')}</span><div><b>ASİSTAN</b><span>Günaydın! Kayıtların biriktikçe sana günlük özet ve öneriler hazırlayacağım.</span></div></div>
  <ul class="g-ozellik"><li>${ik('ok')}iPhone ve Android</li><li>${ik('ok')}Windows bilgisayar</li><li>${ik('ok')}Müdür, personel ve servis yetkileri</li><li>${ik('ok')}Çoklu şube</li></ul></section>`}
@@ -618,7 +644,8 @@ function girisCiz(){
  <p class="hata" id="gHata" role="alert"></p>
  <button class="btn" id="gBtn" type="submit">Giriş yap${ik('sag')}</button></form>
  ${girisSekme==='yonetici'?`<div class="ayrac">veya</div><button type="button" class="btn ikinci" onclick="girisMod='kayit';girisCiz()">İşletmeni kaydet (14 gün ücretsiz deneme)</button>`:`<p class="k" style="margin:0">Şifrenizi unuttuysanız yöneticiniz Ekip sayfasından yenisini verir.</p>`}
- <p class="k" style="margin:0;font-size:12.5px;text-align:center">Ortak kullanılan bilgisayarda "Bilgilerimi hatırla" işaretini kaldırın.</p>`;
+ <p class="k" style="margin:0;font-size:12.5px;text-align:center">Ortak kullanılan bilgisayarda "Bilgilerimi hatırla" işaretini kaldırın.</p>
+ <p class="yasal-alt">${YASAL('kosullar','Kullanım Koşulları')}${YASAL('gizlilik','Gizlilik ve Çerezler')}${YASAL('kvkk','KVKK Aydınlatma Metni')}</p>`;
  $('giris').innerHTML=solPanel()+`<section class="g-sag" aria-labelledby="gBaslik"><div class="g-kutu">${uyari}${govde}</div></section>`;
  scrollTo(0,0);
  if(girisMod==='kayit'&&KURULU&&sb)fiyatGetir().then(fiyatTazele);
@@ -658,6 +685,11 @@ function kayitHtml(){const b=(()=>{try{return JSON.parse(lsG('de-bekleyen')||'{}
  ${isletmeAlanlari(b)}
  ${paketKartlari(b.plan==='pro'?'pro':'standart')}
  <label class="onay"><input type="checkbox" id="kHatirla" checked>Bilgilerimi hatırla</label>
+ <div class="onaylar" role="group" aria-label="Sözleşme ve izinler">
+  <label class="onay metin"><input type="checkbox" id="kKosul"><span>${YASAL('kosullar','Kullanım Koşulları ve Abonelik Sözleşmesi')}’ni okudum, kabul ediyorum.</span></label>
+  <label class="onay metin"><input type="checkbox" id="kKvkk"><span>Kişisel verilerimin işlenmesine ilişkin ${YASAL('kvkk','Aydınlatma Metni')}’ni ve ${YASAL('gizlilik','Gizlilik ve Çerez Politikası')}’nı okudum.</span></label>
+  <label class="onay metin"><input type="checkbox" id="kIleti"><span>Kampanya, yenilik ve indirimlerden e-posta ve SMS ile haberdar olmak istiyorum. <span style="color:var(--soluk)">(isteğe bağlı)</span></span></label>
+ </div>
  <p class="hata" id="kHata" role="alert"></p>
  <button class="btn" id="kBtn" type="submit">Hesabı ve işletmeyi oluştur${ik('sag')}</button></form>
  <button type="button" class="btn ikinci" onclick="girisMod='giris';girisCiz()">Hesabım var, giriş yap</button>`}
@@ -677,12 +709,15 @@ async function kayitOl(){
  if(sifre.length<6){h.textContent='Şifre en az 6 karakter olmalı';$('kSifre').focus();return}
  if(isl.length<2){h.textContent='İşletme adını yaz';$('kIsl').focus();return}
  if(kod.length<3){h.textContent='İşletme kodu en az 3 harf veya rakam olmalı';$('kKod').focus();return}
+ if(!$('kKosul').checked){h.textContent='Devam etmek için Kullanım Koşulları’nı kabul et';$('kKosul').focus();return}
+ if(!$('kKvkk').checked){h.textContent='Devam etmek için Aydınlatma Metni’ni okuduğunu onayla';$('kKvkk').focus();return}
+ const onay={surum:YASAL_SURUM,zaman:new Date().toISOString(),kosullar:true,aydinlatma:true,ticari_ileti:$('kIleti').checked};
  lsS('de-bekleyen',JSON.stringify({yad,ad:isl,sektor,kod,plan}));
  const hz=$('kHatirla').checked;lsS('de-hatirla',hz?'1':'0');sb=istemci(hz);
  const bit=bekle(b,'Oluşturuluyor…');
  try{
   const {data:kb}=await sb.rpc('kod_bos_mu',{p_kod:kod});if(kb===false){bit();h.textContent='Bu işletme kodu alınmış, başka bir kod seçin';$('kKod').focus();return}
-  const {data,error}=await sb.auth.signUp({email,password:sifre,options:{data:{ad:yad}}});
+  const {data,error}=await sb.auth.signUp({email,password:sifre,options:{data:{ad:yad,onay}}});
   if(error){bit();h.textContent=hataTR(error.message);return}
   if(!data.session){bit();pencere(`<h2>E-postanı onayla</h2><p class="k" style="margin:0">${esc(email)} adresine bir onay bağlantısı gönderdik. Onayladıktan sonra giriş yap; işletme bilgilerini hatırlıyoruz.</p><div class="alt"><button class="btn" onclick="pencereKapat();girisMod='giris';girisCiz()">Tamam</button></div>`);return}
   lsS('de-eposta',email);
@@ -722,6 +757,7 @@ async function basla(yeni){
   if(email.endsWith('@'+CALISAN_ALAN)){await sb.auth.signOut({scope:'local'});girisMod='giris';girisCiz();const h=$('gHata');if(h)h.textContent='Bu hesap artık bir işletmeye bağlı değil. Yöneticinizle görüşün.';return}
   return isletmeKurCiz(u&&u.user)}
  BEN=data;ROL=data.rol;ISL=data.isletme;subeHazirla();
+ try{const {data:o}=await sb.auth.getSession();const u=o&&o.session&&o.session.user;HESAP={eposta:(u&&u.email)||'',meta:(u&&u.user_metadata)||{}}}catch(e){HESAP={eposta:'',meta:{}}}
  if(data.fiyat&&data.fiyat.standart!=null)FIYAT={standart:+data.fiyat.standart,pro:+data.fiyat.pro};
  if(ROL!=='yonetici'&&(data.abone===false||data.pro===false)){
   try{await sb.auth.signOut({scope:'local'})}catch(e){}BEN=ROL=ISL=null;girisMod='giris';girisCiz();const h=$('gHata');
@@ -814,20 +850,22 @@ const paketRozet=()=>`<button type="button" class="rozet ${ISL.ucretsiz||kalanGu
 const ilkAd=()=>String(BEN.ad||'').trim().split(/\s+/)[0]||'';
 
 SAYFA.panel=()=>{if(ekipMi())return ekipPanel();
- const o=OZET,site=(ISL.ayarlar&&ISL.ayarlar.site)||{};
+ const o=OZET,ay=ISL.ayarlar||{},site=ay.site||{},std=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+ if(std&&!ay.kuruldu)setTimeout(()=>ayarIsaretle('kuruldu'),0);
  const adimlar=[
-  {ok:!!(site.telefon||site.adres),a:'İşletme bilgilerini tamamla',b:'Telefon, adres ve çalışma saatlerin fişlerde ve müşteriye giden mesajlarda görünecek.',k:'ayarlar',d:'Bilgileri gir'},
-  proMu()?{ok:!!(EKIP&&Array.isArray(EKIP)&&EKIP.some(x=>x.rol!=='yonetici')),a:'Ekibini ekle',b:'Mağaza müdürü, personel ya da teknik servis ekle; herkes yalnızca kendi görevini görür.',k:'ekip',d:'Kişi ekle'}
-   :{ok:lsG('de-ai-ilk')==='1',a:'AI asistana ilk sorunu sor',b:'“Bugün ne kadar kazandım?” gibi sorular sor; kayıtlarına bakıp cevap verir.',k:'asistan',d:'Asistanı aç'},
-  {ok:matchMedia('(display-mode: standalone)').matches||navigator.standalone===true||lsG('de-kuruldu')==='1',a:'Uygulamayı telefonuna yükle',b:'Ana ekrandan tek dokunuşla aç; iPhone, Android ve Windows’ta çalışır.',k:null,d:'Nasıl yüklenir?'},
-  {ok:!!(o&&o.stokCesit>0),a:'Stoğuna ürün ekle',b:'Satış yaptıkça stok kendiliğinden düşer, kasa kendiliğinden toplanır.',k:'stok',d:'Ürün ekle'}];
- const n=adimlar.filter(x=>x.ok).length;
+  {ok:!!(site.telefon||site.adres),a:'İşletme bilgilerini tamamla',c:'Bilgileri tamamla',b:'Telefon, adres ve çalışma saatlerin fişlerde ve müşteriye giden mesajlarda görünecek.',k:'ayarlar',d:'Bilgileri gir'},
+  proMu()?{ok:!!(EKIP&&Array.isArray(EKIP)&&EKIP.some(x=>x.rol!=='yonetici')),a:'Ekibini ekle',c:'Ekibini ekle',b:'Mağaza müdürü, personel ya da teknik servis ekle; herkes yalnızca kendi görevini görür.',k:'ekip',d:'Kişi ekle'}
+   :{ok:lsG('de-ai-ilk')==='1'||!!ay.ai_ilk,a:'AI asistana ilk sorunu sor',c:'Asistana soru sor',b:'“Bugün ne kadar kazandım?” gibi sorular sor; kayıtlarına bakıp cevap verir.',k:'asistan',d:'Asistanı aç'},
+  {ok:std||!!ay.kuruldu||lsG('de-kuruldu')==='1',a:'Uygulamayı telefonuna yükle',c:'Uygulamayı yükle',b:'Ana ekrandan tek dokunuşla aç; iPhone, Android ve Windows’ta çalışır.',k:null,d:'Nasıl yüklenir?'},
+  {ok:!!(o&&o.stokCesit>0),a:'Stoğuna ürün ekle',c:'Ürün ekle',b:'Satış yaptıkça stok kendiliğinden düşer, kasa kendiliğinden toplanır.',k:'stok',d:'Ürün ekle'}];
+ const n=adimlar.filter(x=>x.ok).length,bitti=!!ay.baslarken_bitti||n===adimlar.length;
+ if(n===adimlar.length&&!ay.baslarken_bitti)setTimeout(()=>ayarIsaretle('baslarken_bitti'),0);
  return `<div class="sayfa-bas"><div class="b"><h1>${selam()}${ilkAd()?', '+esc(ilkAd()):''}</h1><p>${tarihYazi()} · ${esc(ISL.ad)}${subeYazi()?' · '+esc(subeYazi()):''}</p></div>${paketRozet()}</div>
  ${!ISL.ucretsiz&&kalanGun()<=3?`<div class="uyari-serit">${ik('uyari')}<div class="b"><b>${denemede()?'Deneme süren':'Aboneliğin'} ${kalanGun()<=0?'bugün bitiyor':kalanGun()+' gün sonra bitiyor'}.</b> Kesintisiz devam etmek için ödemeni yapıp bildir.</div><button type="button" class="btn kucuk" onclick="git('abonelik')">Paket ve ödeme</button></div>`:''}
  ${ONAY_SAYI?`<div class="onay-serit"><span class="ai-ic">${ik('onay')}</span><div class="b"><b>${ONAY_SAYI} işlem onayını bekliyor.</b> Müdür ve personelin satış, stok ve cihaz alımları sen onaylayınca gerçekleşir.</div><button type="button" class="btn kucuk" onclick="git('onaylar')">İncele</button></div>`:''}
  ${BEN.kurucu&&KR_SAYAC&&KR.ozet&&!KR.ozet.hata?`<div class="kurucu-serit"><span class="ai-ic">${ik('tac')}</span><div class="b"><b style="color:var(--yazi)">Kurucu paneli</b><br>${+KR.ozet.bekleyen_talep||0} bekleyen talep · ${+KR.ozet.okunmamis_oneri||0} yeni öneri</div><button type="button" class="btn ai kucuk" onclick="git('kurucu')">Aç</button></div>`:''}
- <section class="kart" aria-labelledby="baslarken"><div class="sayfa-bas" style="margin-bottom:6px"><div class="b"><h2 id="baslarken">Başlarken · ${n}/4</h2><p class="k" style="margin:2px 0 0">Bu adımları bitirince işletmen dijitalde hazır.</p></div></div>
- ${adimlar.map((x,i)=>`<div class="adim${x.ok?' ok':''}"><span class="no">${x.ok?ik('ok'):i+1}</span><div class="b"><b>${x.a}</b><span>${x.b}</span></div>${x.ok?'':x.kilitli?`<span class="rozet soluk">${ik('kilit')}</span>`:x.k?`<button type="button" class="btn ikinci kucuk" onclick="git('${x.k}')">${x.d}</button>`:`<button type="button" class="btn ikinci kucuk" onclick="kur()">${x.d}</button>`}</div>`).join('')}</section>
+ ${bitti?'':`<section class="kart baslarken" aria-label="Başlarken"><div class="bl-ust"><b>Başlarken</b><span class="bl-sayi">${n}/${adimlar.length}</span><span class="bl-cubuk" role="progressbar" aria-label="Tamamlanan adımlar" aria-valuemin="0" aria-valuemax="${adimlar.length}" aria-valuenow="${n}"><i style="width:${Math.round(n/adimlar.length*100)}%"></i></span></div>
+ <div class="bl-adimlar">${adimlar.filter(x=>!x.ok).map(x=>`<button type="button" class="bl-adim" title="${esc(x.a+': '+x.b)}" onclick="${x.k?`git('${x.k}')`:'kur()'}">${esc(x.c)}${ik('sag')}</button>`).join('')}</div></section>`}
  <section class="izgara" aria-label="Bugünün rakamları">
   <div class="kart kpi"><span>Bugünkü ciro</span><b>${o?TL(o.ciro):'—'}</b><em>${o?o.satisAdet+' satış':ozetHata?'Bağlantı kurulamadı':'Yükleniyor…'}</em></div>
   <div class="kart kpi"><span>Bugünkü kâr</span><b>${o?TL(o.kar):'—'}</b><em>Alış ve giderler düşülmüş</em></div>
@@ -837,6 +875,13 @@ SAYFA.panel=()=>{if(ekipMi())return ekipPanel();
  ${subeOzetHtml()}
  <section class="ai-kart" aria-labelledby="aiBaslik"><div class="ai-ust"><span class="ai-ic">${ik('yildiz')}</span><div style="flex:1 1 220px"><h2 id="aiBaslik" style="font-size:17px">AI Asistan</h2><p class="k" style="margin:2px 0 0">İşletmenin kayıtlarına bakıp sorularını cevaplar.</p></div><button type="button" class="btn ai kucuk" onclick="git('asistan')">${ik('yildiz')}Asistanı aç</button></div>
  <div class="cip-sira">${ONERI_SORU().map(q=>`<button type="button" class="cip" onclick="sor(this.textContent)">${esc(q)}</button>`).join('')}</div></section>`};
+// İşletme ayarlarına kalıcı işaret koyar (başlarken bitti, uygulama yüklendi); yalnızca yönetici yazabilir
+// Yazmalar sırayla gider ve bu oturumda konan bütün işaretleri o anki ayarların üstüne yazar (sonra gelen eskiyi ezmesin)
+let ayarSira=Promise.resolve();const AYAR_ISARET={};
+function ayarIsaretle(k){if(!sb||!ISL||!BEN||!yonMu())return;const ay=ISL.ayarlar||{};if(ay[k])return;const id=ISL.id;
+ const bu=AYAR_ISARET[id]=AYAR_ISARET[id]||{};bu[k]=true;ISL.ayarlar={...ay,...bu};if(BEN.isletme)BEN.isletme.ayarlar=ISL.ayarlar;
+ ayarSira=ayarSira.then(()=>{if(!ISL||ISL.id!==id)return;const g={...(ISL.ayarlar||{}),...bu};ISL.ayarlar=g;if(BEN&&BEN.isletme)BEN.isletme.ayarlar=g;
+  return sb.from('isletme').update({ayarlar:g}).eq('id',id)}).catch(()=>{})}
 let ozetYuk=false,ozetHata=false;
 addEventListener('online',()=>{ozetHata=false;if(BEN&&sayfaAdi()==='panel')ciz()});
 // Rakamlar: seçili şubenin ya da bütün şubelerin; bütün şubeler seçiliyse şube şube de hesaplanır
@@ -1306,6 +1351,7 @@ const ekipSayfa=()=>{
   <div class="alan"><label for="cSifre">Şifre</label><input id="cSifre" type="text" placeholder="En az 6 karakter" autocomplete="new-password"></div>
   ${cokSube()?`<div class="alan"><label for="cSube">Şubesi</label>${subeSecimi('cSube',SUBE)}</div>`:''}
   ${rolSecici('cRol','personel')}
+  <label class="onay metin" style="grid-column:1/-1"><input type="checkbox" id="cBilgi"><span>Eklediğim kişiyi, kişisel verilerinin Digital Esnaf AI’da işleneceği konusunda bilgilendirdim. ${YASAL('kvkk','Aydınlatma Metni')}</span></label>
   <button class="btn" id="cBtn" type="submit">${ik('arti')}Ekle</button></form>
  <div class="bilgi-satir" style="margin-top:16px"><div class="b"><small>İşletme kodunuz</small><b>${esc(ISL.kod)}</b></div><button type="button" class="ibtn" aria-label="İşletme kodunu kopyala" onclick="kopyala('${esc(ISL.kod)}')">${ik('kopya')}</button></div></section>`};
 function rolAc(id,ad,rol){hedefId=id;pencere(`<h2>${esc(ad)} · görevi</h2><p class="k" style="margin:0">Görev değişince ${esc(ad)} çıkış yapar; yeniden girince yeni görevinin ekranlarını görür.</p>${rolSecici('rgRol',rol)}<p class="hata" id="rgHata" role="alert"></p><div class="alt"><button class="btn ikinci" onclick="pencereKapat()">Vazgeç</button><button class="btn" id="rgBtn" onclick="rolKaydet()">Kaydet</button></div>`,'genis')}
@@ -1319,12 +1365,13 @@ async function calisanEkle(){
  if(ad.length<2){bildir('Kişinin adını yazın');$('cAd').focus();return}
  if(!/^[a-z0-9_]{3,20}$/.test(ku)){bildir('Kullanıcı adı en az 3 harf veya rakam olmalı');$('cKul').focus();return}
  if(sf.length<6){bildir('Şifre en az 6 karakter olmalı');$('cSifre').focus();return}
+ if(!$('cBilgi').checked){bildir('Kişiyi kişisel verileri konusunda bilgilendirdiğini onayla');$('cBilgi').focus();return}
  const email=ku+'.'+ISL.kod+'@'+CALISAN_ALAN,bit=bekle(b,'Ekleniyor…');
  const ayri=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{global:{fetch:anahtarFetch},auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,storageKey:'de-yeni-calisan'}});
  try{
   const {data:davet,error:e0}=await sb.rpc('calisan_hazirla',{p_kullanici:ku});
   if(e0){bit();bildir(/zaten ekli/.test(e0.message)?'Bu kullanıcı adı ekibinizde zaten var':hataTR(e0.message));return}
-  const {error}=await ayri.auth.signUp({email,password:sf,options:{data:{ad,davet}}});
+  const {error}=await ayri.auth.signUp({email,password:sf,options:{data:{ad,davet,aydinlatma:{surum:YASAL_SURUM,zaman:new Date().toISOString()}}}});
   if(error){bit();const m=hataTR(error.message);bildir(/registered|exists/i.test(error.message)?'Bu kullanıcı adı şu anda kullanılamıyor. Biraz sonra yeniden deneyin.':m.startsWith('İşlem yapılamadı')?'Çalışan hesabı açılamadı. Supabase’de “Confirm email” ayarı kapalı olmalı.':m);return}
   const sube=($('cSube')&&$('cSube').value)||null;
   const {error:e2}=await sb.rpc('calisan_bagla',sube?{p_kullanici:ku,p_ad:ad,p_rol:rol,p_sube:sube}:{p_kullanici:ku,p_ad:ad,p_rol:rol});
@@ -1364,9 +1411,23 @@ SAYFA.ayarlar=()=>{const s=(ISL.ayarlar&&ISL.ayarlar.site)||{},y=yonMu();
  return `<div class="sayfa-bas"><div class="b"><h1>${y?'Ayarlar':'Hesabım'}</h1><p>${y?'İşletme bilgileri ve hesabın.':esc(ISL.ad)+' · '+esc(ROL_AD[ROL]||'')+' hesabı'+(sabitSube()?' · Şube: '+esc(subeAd(sabitSube())):'')}</p></div></div>${temaKart()}${isletmeForm}
  <section class="kart" aria-labelledby="hesapBaslik"><h2 id="hesapBaslik">Şifremi değiştir</h2><form class="form" novalidate style="margin-top:14px" onsubmit="event.preventDefault();kendiSifre()"><div class="alan"><label for="hSifre">Yeni şifre</label>${sifreAlani('hSifre','En az 6 karakter','new-password')}</div><button class="btn ikinci" id="hBtn" type="submit">Şifreyi değiştir</button></form>
  <div class="oturum-satir"><p class="k" style="margin:0">Hesabın başka bir telefonda ya da bilgisayarda açık kaldıysa oradan çıkış yapabilirsin. Bu cihazda açık kalırsın.</p><button type="button" class="btn ikinci kucuk" id="otBtn" onclick="const b=bekle(this,'Kapatılıyor…');digerOturumlar().finally(b)">${ik('cikis')}Diğer cihazlardan çıkış yap</button></div></section>
+ ${iletiKart()}
  <section class="kart" aria-labelledby="yukleBaslik"><h2 id="yukleBaslik">Uygulamayı yükle</h2><p class="k" style="margin:6px 0 14px">iPhone: Safari'de Paylaş düğmesine dokun, "Ana Ekrana Ekle"yi seç. Android ve Windows: tarayıcının "Uygulamayı yükle" seçeneğini kullan.</p><button type="button" class="btn ikinci kucuk" onclick="kur()">${ik('indir')}Yükle</button></section>
  <div><button type="button" class="btn tehlike kucuk" onclick="cikis()">${ik('cikis')}Çıkış yap</button></div>
- <p class="k" style="font-size:12.5px">Dijital Esnaf AI · sürüm ${SURUM}</p>`};
+ <p class="k" style="font-size:12.5px">Digital Esnaf AI · sürüm ${SURUM} · ${YASAL('','Yasal metinler')}</p>`};
+// Ticari ileti izni yalnızca kendi e-postasıyla kayıt olan hesapta (ekip hesaplarında yok)
+const iletiKart=()=>{if(!yonMu()||!HESAP.eposta||HESAP.eposta.endsWith('@'+CALISAN_ALAN))return '';const o=(HESAP.meta&&HESAP.meta.onay)||{};
+ return `<section class="kart" aria-labelledby="iletiBaslik"><h2 id="iletiBaslik">İletişim izinleri</h2><p class="k" style="margin:4px 0 14px">Kampanya e-postalarını ve SMS’leri alma iznini istediğin zaman buradan geri alabilirsin.</p>
+ <label class="onay metin"><input type="checkbox" id="aIleti"${o.ticari_ileti?' checked':''} onchange="iletiKaydet(this)"><span>Kampanya, yenilik ve indirimlerden e-posta ve SMS ile haberdar olmak istiyorum.</span></label>
+ <p class="k" style="margin:14px 0 0;font-size:13px">${YASAL('kvkk','Aydınlatma Metni')} · ${YASAL('gizlilik','Gizlilik ve Çerez Politikası')} · ${YASAL('kosullar','Kullanım Koşulları')}</p></section>`};
+// Onayların hangi metin sürümüne ve ne zaman verildiği hesabın kullanıcı bilgilerinde saklanır
+async function onayYaz(ek){const o={...((HESAP.meta&&HESAP.meta.onay)||{}),...ek};
+ const {data,error}=await sb.auth.updateUser({data:{onay:o}});if(error)throw error;
+ HESAP.meta=(data&&data.user&&data.user.user_metadata)||{...HESAP.meta,onay:o};return o}
+async function iletiKaydet(el){const acik=el.checked;el.disabled=true;
+ try{await onayYaz({ticari_ileti:acik,ticari_ileti_zaman:new Date().toISOString()});bildir(acik?'İzin kaydedildi':'İzin geri alındı')}
+ catch(e){el.checked=!acik;bildir(hataTR(e&&e.message))}
+ el.disabled=false}
 async function isletmeKaydet(){const ad=$('aAd').value.trim();if(ad.length<2){bildir('İşletme adını yazın');return}
  const site={...(((ISL.ayarlar||{}).site)||{}),telefon:$('aTel').value.trim(),whatsapp:$('aWa').value.trim(),adres:$('aAdres').value.trim(),saat:$('aSaat').value.trim()};
  const bit=bekle($('aBtn'),'Kaydediliyor…');
@@ -1398,13 +1459,14 @@ const proKapi=k=>`<div class="sayfa-bas"><div class="b"><h1>${PRO_ADI[k]}</h1><p
 function proGecAc(){
  pencere(`<h2>Pro pakete geçiş</h2>${karsilastirHtml()}
  <p style="margin:0">Aradaki fark: <b>${fiyatYaz(proFark())}/ay</b>. Talebin kurucuya iletilir; ödemen onaylanınca Çoklu şube, Ekip, Raporlar ve Kampanyalar hemen açılır.</p>
- <label class="onay" style="align-items:flex-start;font-weight:500;line-height:1.45"><input type="checkbox" id="pOnay" style="margin-top:1px">Pro pakete geçmeyi ve aylık ${fiyatYaz(proFark())} farkı ödemeyi kabul ediyorum.</label>
+ <label class="onay metin"><input type="checkbox" id="pOnay"><span>Pro pakete geçmeyi ve aylık ${fiyatYaz(proFark())} farkı ödemeyi kabul ediyorum. ${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni okudum, onaylıyorum. Hizmetin ödemeden hemen sonra başlamasını kabul ediyorum ve bu nedenle cayma hakkımın bulunmadığını biliyorum.</span></label>
  <div class="alan"><label for="pNot">Not (isteğe bağlı)</label><textarea id="pNot" rows="2" maxlength="500" placeholder="Örn. havaleyi yaptım, gönderen: …"></textarea></div>
  <p class="hata" id="pHata" role="alert"></p>
  <div class="alt"><button class="btn ikinci" onclick="pencereKapat()">Vazgeç</button><button class="btn" id="pBtn" onclick="proTalepGonder()">Talebi gönder</button></div>`)}
 async function proTalepGonder(){if(!$('pOnay').checked){$('pHata').textContent='Devam etmek için onay kutusunu işaretle';return}
  const bit=bekle($('pBtn'),'Gönderiliyor…');const {error}=await sb.rpc('talep_olustur',{p_tur:'pro',p_aciklama:$('pNot').value});bit();
  if(error){$('pHata').textContent=hataTR(error.message);return}
+ onayYaz({odeme:{surum:YASAL_SURUM,zaman:new Date().toISOString(),tur:'pro'}}).catch(()=>{});
  TALEPLER=null;odemeBilgiGoster('Talebin alındı','Pro’ya geçiş talebin kurucuya iletildi. Farkı aşağıdaki hesaba gönderdiğinde Pro özellikleri açılır.',proFark())}
 
 let ODEME=null,TALEPLER=null;
@@ -1425,19 +1487,24 @@ SAYFA.abonelik=()=>{const a=aboneMu(),pk=proMu()?'pro':'standart';
   <div class="bilgi-satir" style="margin-top:12px"><div class="b"><small>Durum</small><b style="font-size:16px">${paketDurum()}</b></div></div>
   ${ISL.ucretsiz?'':`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn" onclick="odemeBildirAc()">${ik('odeme')}Ödeme yaptım, bildir</button>${pk==='standart'?`<button type="button" class="btn ikinci" onclick="proGecAc()">Pro’ya geç</button>`:''}</div>`}
  </section>
- ${ISL.ucretsiz?'':`<section class="kart"><h2>Ödeme bilgileri</h2><p class="k" style="margin:4px 0 6px">Aylık ücreti bu hesaba gönderip "Ödeme yaptım, bildir" düğmesine bas.</p><div>${odemeHtml()}</div></section>`}
- <section class="kart"><h2>Taleplerin</h2>${!TALEPLER?'<p class="k">Yükleniyor…</p>':!TALEPLER.length?'<p class="k" style="margin:8px 0 0">Henüz bir talep ya da ödeme bildirimi göndermedin.</p>':TALEPLER.map(t=>`<div class="liste-satir"><div class="b"><b>${t.tur==='pro'?'Pro’ya geçiş':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart')}</b><span>${fiyatYaz(t.tutar)} · ${tarihSaat(t.created_at)}</span>${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div>${talepDurum(t)}</div>`).join('')}</section>`};
+ ${ISL.ucretsiz?'':`<section class="kart"><h2>Ödeme bilgileri</h2><p class="k" style="margin:4px 0 6px">Aylık ücreti bu hesaba gönderip "Ödeme yaptım, bildir" düğmesine bas. Ödemeden önce ${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni oku.</p><div>${odemeHtml()}</div></section>`}
+ <section class="kart"><h2>Taleplerin</h2>${!TALEPLER?'<p class="k">Yükleniyor…</p>':!TALEPLER.length?'<p class="k" style="margin:8px 0 0">Henüz bir talep ya da ödeme bildirimi göndermedin.</p>':TALEPLER.map(t=>`<div class="liste-satir"><div class="b"><b>${t.tur==='pro'?'Pro’ya geçiş':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart')}</b><span>${fiyatYaz(t.tutar)} · ${tarihSaat(t.created_at)}</span>${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div>${talepDurum(t)}</div>`).join('')}</section>
+ <p class="yasal-alt">${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}${YASAL('iade','İptal ve İade Koşulları')}${YASAL('kosullar','Kullanım Koşulları')}</p>`};
 SONRA.abonelik=async()=>{const is=[];if(!ODEME&&!ISL.ucretsiz)is.push(odemeYukle());if(!TALEPLER)is.push(taleplerimYukle());if(!is.length)return;await Promise.all(is);if(sayfaAdi()==='abonelik')ciz()};
 async function odemeBildirAc(){if(!ODEME)await odemeYukle();const pk=proMu()?'pro':'standart';
  pencere(`<h2>Ödeme bildir</h2><p class="k" style="margin:0">Ödemeyi aşağıdaki hesaba yaptıktan sonra bildir. Kurucu onaylayınca aboneliğin 1 ay uzar.</p>
  <fieldset class="paketler"><legend class="etiket">Hangi paket için?</legend>${['standart','pro'].map(k=>`<label class="paket${pk===k?' on':''}"><input type="radio" name="oPlan" value="${k}"${pk===k?' checked':''} onchange="paketSec(this)"><span class="b"><b>${k==='pro'?'Pro':'Standart'}</b><span class="fiyat">${fiyatYaz(FIYAT[k])}<span class="k" style="font-size:13px;font-family:Inter,sans-serif"> /ay</span></span></span></label>`).join('')}</fieldset>
  <div>${odemeHtml()}</div>
  <div class="alan"><label for="obNot">Not (isteğe bağlı)</label><textarea id="obNot" rows="2" maxlength="500" placeholder="Örn. 3 Kasım’da havale yaptım, gönderen: …"></textarea></div>
+ <label class="onay metin"><input type="checkbox" id="obOnay"><span>${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni okudum, onaylıyorum. Hizmetin ödemeden hemen sonra başlamasını kabul ediyorum ve bu nedenle cayma hakkımın bulunmadığını biliyorum.</span></label>
  <p class="hata" id="obHata" role="alert"></p>
  <div class="alt"><button class="btn ikinci" onclick="pencereKapat()">Vazgeç</button><button class="btn" id="obBtn" onclick="odemeBildir()">Bildir</button></div>`)}
-async function odemeBildir(){const r=document.querySelector('input[name=oPlan]:checked'),plan=r?r.value:'standart';const bit=bekle($('obBtn'),'Gönderiliyor…');
+async function odemeBildir(){const r=document.querySelector('input[name=oPlan]:checked'),plan=r?r.value:'standart';
+ if(!$('obOnay').checked){$('obHata').textContent='Devam etmek için onay kutusunu işaretle';return}
+ const bit=bekle($('obBtn'),'Gönderiliyor…');
  const {error}=await sb.rpc('talep_olustur',{p_tur:'odeme',p_aciklama:$('obNot').value,p_plan:plan});bit();
  if(error){$('obHata').textContent=hataTR(error.message);return}
+ onayYaz({odeme:{surum:YASAL_SURUM,zaman:new Date().toISOString(),tur:'odeme',plan}}).catch(()=>{});
  pencereKapat();TALEPLER=null;bildir('Bildirimin kurucuya iletildi');if(sayfaAdi()==='abonelik')ciz()}
 
 /* ---------- AI Asistan ---------- */
@@ -1457,11 +1524,11 @@ function metinBicim(t){const satirlar=esc(t).split('\n');let html='',liste=null;
  kapat();return html||'<p></p>'}
 const mesajHtml=m=>`<div class="mesaj ${m.rol==='kullanici'?'ben':'ai'}${m.hata?' hata':''}">${m.rol==='kullanici'?`<p>${esc(m.metin).replace(/\n/g,'<br>')}</p>`:metinBicim(m.metin)}</div>`;
 SAYFA.asistan=()=>{sohbetYukle();
- const bos=`<div class="mesaj ai"><p>Merhaba${ilkAd()?' '+esc(ilkAd()):''}! Ben işletme asistanınım. ${yonMu()?'Satış, stok, kasa ve teknik servisle':'Stok, satılan ürünler ve teknik servisle'} ilgili sorularını kayıtlarına bakarak cevaplarım.</p><p>Kayıt girdikçe cevaplarım daha isabetli olur. Aşağıdaki sorulardan biriyle başlayabilirsin.</p></div>`;
+ const bos=`<div class="mesaj ai"><p>Merhaba${ilkAd()?' '+esc(ilkAd()):''}! Ben işletme asistanınım. ${yonMu()?'Satış, stok, kasa ve teknik servisle':'Stok, satılan ürünler ve teknik servisle'} ilgili sorularını kayıtlarına bakarak cevaplarım.</p><p>Kayıt girdikçe cevaplarım daha isabetli olur. Aşağıdaki sorulardan biriyle başlayabilirsin.</p><p style="font-size:13px;color:var(--soluk)">Cevaplarım otomatik üretilir ve hatalı olabilir; önemli kararlarda kayıtlarını ve uzmanını kontrol et. Soruların, işletme kayıtlarının özetiyle birlikte yapay zekâ sağlayıcısına iletilir.</p></div>`;
  return `<div class="sohbet-sayfa"><div class="sayfa-bas"><span class="ai-ic">${ik('yildiz')}</span><div class="b"><h1>AI Asistan</h1><p>${esc(ISL.ad)} kayıtlarına bakarak cevap verir.</p></div><span class="rozet ai" id="aiKalan"${AI_KALAN==null?' hidden':''}>Bu ay ${AI_KALAN==null?'':AI_KALAN} soru hakkı</span>${SOHBET.length?`<button type="button" class="btn ikinci kucuk" onclick="sohbetTemizle()">Sohbeti temizle</button>`:''}</div>
  <div class="sohbet" id="sohbet">${SOHBET.length?SOHBET.map(mesajHtml).join(''):bos}${AI_MESGUL?'<div class="mesaj ai" role="status" aria-label="Asistan yazıyor"><span class="yaziyor"><i></i><i></i><i></i></span></div>':''}</div>
  <div class="soru-kutu"><div class="cip-sira" aria-label="Örnek sorular">${ONERI_SORU().map(q=>`<button type="button" class="cip" onclick="sor(this.textContent)">${esc(q)}</button>`).join('')}</div>
- <form class="soru-satir" onsubmit="event.preventDefault();sor($('soru').value)"><label for="soru" class="gizli-etiket">Sorunu yaz</label><textarea id="soru" rows="1" maxlength="2000" placeholder="Bir şey sor…" onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sor(this.value)}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,160)+'px'"></textarea><button class="gonder" id="soruBtn" aria-label="Gönder"${AI_MESGUL?' disabled':''}>${ik('gonder')}</button></form></div></div>`};
+ <form class="soru-satir" onsubmit="event.preventDefault();sor($('soru').value)"><label for="soru" class="gizli-etiket">Sorunu yaz</label><textarea id="soru" rows="1" maxlength="2000" placeholder="Bir şey sor…" onkeydown="if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();sor(this.value)}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,160)+'px'"></textarea><button class="gonder" id="soruBtn" aria-label="Gönder"${AI_MESGUL?' disabled':''}>${ik('gonder')}</button></form><p class="ai-not">Cevaplar otomatik üretilir ve hatalı olabilir. ${YASAL('kvkk','Ayrıntı')}</p></div></div>`};
 SONRA.asistan=()=>{window.scrollTo(0,document.documentElement.scrollHeight);if(AI_KALAN==null)aiDurum();const s=$('soru');if(s&&!AI_MESGUL&&matchMedia('(pointer:fine)').matches)s.focus()};
 async function aiDurum(){try{const {data}=await sb.rpc('ai_durum');if(data&&data.kalan!=null){AI_KALAN=data.kalan;const e=$('aiKalan');if(e){e.hidden=false;e.textContent='Bu ay '+AI_KALAN+' soru hakkı'}}}catch(e){}}
 async function aiIstek(govde){
@@ -1479,7 +1546,7 @@ async function sor(t,tur){t=String(t||'').trim();if(!t||AI_MESGUL)return;sohbetY
  const r=await aiIstek({soru:t,gecmis,tur:tur||'soru'});
  AI_MESGUL=false;
  if(r.hata)SOHBET.push({rol:'asistan',metin:r.hata,hata:1});
- else{SOHBET.push({rol:'asistan',metin:r.cevap});lsS('de-ai-ilk','1');if(r.kalan!=null)AI_KALAN=r.kalan}
+ else{SOHBET.push({rol:'asistan',metin:r.cevap});lsS('de-ai-ilk','1');ayarIsaretle('ai_ilk');if(r.kalan!=null)AI_KALAN=r.kalan}
  sohbetKaydet();if(sayfaAdi()==='asistan')ciz()}
 
 /* ---------- Kampanyalar (Pro, AI ile) ---------- */
@@ -1743,10 +1810,10 @@ function alimYazdir(id){const a=alimBul(id);if(!a)return;const b=subeler().find(
  <h2>Satan (müşteri)</h2><table>${s('Ad soyad',a.musteri_ad)}${s('Cep telefonu',telYaz(a.musteri_tel))}</table>
  <h2>Cihaz</h2><table>${s('Marka / model',alimAd(a))}${s('IMEI',a.imei)}${s('Hafıza',a.hafiza)}${s('Renk',a.renk)}${s('Durumu',tipAd(a.durum_tip))}${s('Pil sağlığı',a.pil!=null?'%'+a.pil:'')}${s('Hasar',a.hasar?(a.hasar_not||'Var'):'Yok')}${a.hasar&&a.hasar_foto&&a.hasar_foto.length?s('Hasar fotoğrafı',a.hasar_foto.length+' adet, sistemde kayıtlı'):''}</table>
  <h2>Bedel</h2><table>${s('Alış bedeli',TL(a.alis))}${s('Ödeme şekli',a.odeme_yontem)}</table>
- <div class="beyan">Yukarıda bilgileri yazılı cihazın bana ait olduğunu, çalıntı ya da kayıp olmadığını, üzerinde başkasına ait bir hak bulunmadığını ve cihazı <b>${esc(TL(a.alis))}</b> bedel karşılığında <b>${esc(ISL.ad)}</b>’ye sattığımı; bedeli ${esc(String(a.odeme_yontem).toLocaleLowerCase('tr-TR'))} olarak eksiksiz aldığımı beyan ederim.</div>
+ <div class="beyan">Yukarıda bilgileri yazılı cihazın bana ait olduğunu, çalıntı ya da kayıp olmadığını, üzerinde başkasına ait bir hak bulunmadığını ve cihazı <b>${esc(TL(a.alis))}</b> bedel karşılığında <b>${esc(ISL.ad)}</b> işletmesine sattığımı; bedeli ${esc(String(a.odeme_yontem).toLocaleLowerCase('tr-TR'))} olarak eksiksiz aldığımı beyan ederim.</div>
  <p class="kucuk">Elektronik onay: ${a.musteri_karar_zaman?esc(new Date(a.musteri_karar_zaman).toLocaleString('tr-TR'))+' tarihinde '+esc(telYaz(a.musteri_tel).replace(/\d{3} \d{2}(?= \d{2}$)/,'*** **'))+' numarasına gönderilen bağlantıdan onaylandı.':'—'}</p>
  <div class="imza"><div><b>Satan (müşteri)</b>Ad soyad · imza</div><div><b>Alan (${esc(ISL.ad)})</b>Ad soyad · imza</div></div>
- <p class="kucuk" style="margin-top:16px">Kişisel verileriniz (ad soyad, telefon, cihaz bilgileri) 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında yalnızca bu alım işleminin kaydı ve yasal yükümlülüklerin yerine getirilmesi amacıyla ${esc(ISL.ad)} tarafından işlenir ve saklanır.</p>
+ <p class="kucuk" style="margin-top:16px">Kişisel verileriniz (ad soyad, telefon, cihaz bilgileri) 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında yalnızca bu alım işleminin kaydı ve yasal yükümlülüklerin yerine getirilmesi amacıyla ${esc(ISL.ad)} tarafından işlenir ve saklanır. Aydınlatma Metni’nin tamamı: ${esc(location.host)}/yasal.html#cihaz-alim</p>
  <script>onload=()=>setTimeout(()=>print(),300)<\/script></body></html>`);w.document.close()}
 
 /* ---------- Müşterinin onay sayfası (giriş gerekmez) ---------- */
@@ -1770,9 +1837,19 @@ function moCiz(){const a=MO,st=(k,v)=>v==null||v===''?'':`<div class="mo-satir">
  else if(a.karar==='red')alt=`<div class="mo-sonuc red" role="status">${ik('kapat')}<div><b>Onaylamadınız</b><span>${tarihSaat(a.karar_zaman)} · Bir yanlışlık varsa mağazayla görüşün.</span></div></div>`;
  else if(a.iptal)alt=`<div class="mo-sonuc" role="status">${ik('uyari')}<div><b>Bu işlem iptal edildi</b><span>Ayrıntı için mağazayla görüşün.</span></div></div>`;
  else if(a.suresi_doldu)alt=`<div class="mo-sonuc" role="status">${ik('uyari')}<div><b>Bağlantının süresi doldu</b><span>Mağazadan yeni bağlantı isteyin.</span></div></div>`;
- else alt=`<p class="mo-beyan">Onaylarsanız bu cihazı yukarıdaki tutara <b>${esc(a.isletme)}</b>’ye sattığınızı ve cihazın size ait olduğunu beyan etmiş olursunuz. Ardından mağazada satış formunu imzalarsınız.</p>
+ else alt=`<p class="mo-beyan">“Onaylıyorum” düğmesine basarak bilgileri kontrol ettiğinizi, cihazın size ait olduğunu, cihazı yukarıdaki tutarla <b>${esc(a.isletme)}</b> işletmesine sattığınızı ve aşağıdaki Aydınlatma Metni’ni okuduğunuzu onaylamış olursunuz. Ardından mağazada satış formunu imzalarsınız.</p>
  <div class="mo-dugme"><button type="button" class="btn" id="moEvet" onclick="moKarar(true)">${ik('ok')}Onaylıyorum</button><button type="button" class="btn ikinci" id="moHayir" onclick="moKarar(false)">Onaylamıyorum</button></div>`;
- moYaz(`<h1>Cihaz satış onayı</h1><p class="k" style="margin:0"><b style="color:var(--yazi)">${esc(a.isletme)}</b> sizden aşağıdaki cihazı satın almak istiyor. Bilgileri kontrol edin.</p>${bilgi}${alt}<p class="kvkk">Kişisel verileriniz (ad soyad, telefon, cihaz bilgileri) 6698 sayılı KVKK kapsamında yalnızca bu alım işleminin kaydı ve yasal yükümlülüklerin yerine getirilmesi amacıyla ${esc(a.isletme)} tarafından işlenir ve saklanır. Onayınızın zamanı ve bağlandığınız cihazın bilgisi kayda geçer.</p>`)}
+ moYaz(`<h1>Cihaz satış onayı</h1><p class="k" style="margin:0"><b style="color:var(--yazi)">${esc(a.isletme)}</b> sizden aşağıdaki cihazı satın almak istiyor. Bilgileri kontrol edin.</p>${bilgi}${alt}<p class="kvkk">Kişisel verileriniz (ad soyad, telefon, cihaz bilgileri) 6698 sayılı KVKK kapsamında yalnızca bu alım işleminin kaydı ve yasal yükümlülüklerin yerine getirilmesi amacıyla ${esc(a.isletme)} tarafından işlenir ve saklanır. Onayınızın zamanı ve bağlandığınız cihazın bilgisi kayda geçer.</p>${cihazAydinlatma(a)}`)}
+// Cihazını satan kişi için KVKK aydınlatma metninin tamamı (yasal.html Bölüm 8 ile aynı)
+function cihazAydinlatma(a){const ilt=[a.isletme_adres,a.isletme_tel].filter(Boolean).map(esc).join(' · ');
+ return `<details class="mo-aydinlatma"><summary>Aydınlatma Metni’nin tamamı</summary><div>
+ <p><b>Veri sorumlusu:</b> ${esc(a.isletme)}${a.sube?' · '+esc(a.sube)+' şubesi':''}. ${ilt?ilt+'.':'İşletmenin adresi ve telefonu mağazadaki alım formunda yazılıdır.'}</p>
+ <p><b>İşlenen veriler:</b> ad soyad, cep telefonu; cihazın markası, modeli, IMEI numarası, hafızası, rengi, pil sağlığı, hasarı ve hasar fotoğrafları; alış bedeli ve ödeme şekli; onayın zamanı, onayın verildiği IP adresi ve tarayıcı bilgisi; imzalı formun görüntüsü.</p>
+ <p><b>Amaç ve hukuki sebep:</b></p><ul><li>Alım-satım sözleşmesinin kurulması, ifası ve belgelenmesi (KVKK m.5/2-c).</li><li>Muhasebe, vergi ve ikinci el cihaz ticaretine ilişkin yasal yükümlülüklerin yerine getirilmesi (m.5/2-ç).</li><li>Cihazın sahipliği ya da durumu hakkında doğabilecek uyuşmazlıklarda hakların korunması (m.5/2-e).</li></ul>
+ <p><b>Aktarım:</b></p><ul><li>Talep halinde ve kanuni zorunluluk varsa kolluk, adli makamlar ve diğer yetkili kamu kurumlarına.</li><li>İşletmenin mali müşavirine (muhasebe kayıtları).</li><li>Kayıtların tutulduğu uygulamayı sunan Digital Esnaf AI’ya ve onun altyapı sağlayıcılarına; bunların bir kısmı yurt dışındadır ve aktarım KVKK m.9’daki güvencelerle yapılır.</li><li>Onay bağlantısı size WhatsApp üzerinden gönderilir; bu mesaj WhatsApp’ın (Meta) kendi gizlilik koşullarına tabidir.</li></ul>
+ <p><b>Saklama süresi:</b> ilgili mevzuattaki süreler boyunca, en fazla 10 yıl; süre dolunca silinir ya da anonim hale getirilir.</p>
+ <p><b>Haklarınız:</b> KVKK m.11’deki haklarınızı (bilgi isteme, düzeltme, silme, itiraz, zararın giderilmesi) kullanmak için cihazı sattığınız işletmeye telefonla ya da adresine yazılı olarak başvurabilirsiniz.</p>
+ </div></details>`}
 async function moKarar(onay){const b=$(onay?'moEvet':'moHayir'),bit=bekle(b,onay?'Onaylanıyor…':'Kaydediliyor…'),dg=$(onay?'moHayir':'moEvet');if(dg)dg.disabled=true;
  let r;try{r=await MO_SB.rpc('alim_karar',{p_token:MO_KOD,p_onay:onay})}catch(e){r={error:e}}
  if(r.error){bit();if(dg)dg.disabled=false;bildir(hataTR(hataMetin(r.error)));return}
@@ -1871,11 +1948,11 @@ async function krAyarKaydet(){const n=(i,tam)=>{const v=$(i).value.trim().replac
 /* ---------- Uygulamayı yükle ---------- */
 let kurOlay=null;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();kurOlay=e;kurDugmesi()});
-addEventListener('appinstalled',()=>{kurOlay=null;lsS('de-kuruldu','1');kurDugmesi()});
+addEventListener('appinstalled',()=>{kurOlay=null;lsS('de-kuruldu','1');ayarIsaretle('kuruldu');kurDugmesi()});
 function kurDugmesi(){const b=$('kurBtn');if(!b)return;const std=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;b.hidden=std||!(kurOlay||/iphone|ipad|ipod/i.test(navigator.userAgent))}
-async function kur(){if(kurOlay){kurOlay.prompt();try{const r=await kurOlay.userChoice;if(r&&r.outcome==='accepted')lsS('de-kuruldu','1')}catch(e){}kurOlay=null;kurDugmesi();return}
+async function kur(){if(kurOlay){kurOlay.prompt();try{const r=await kurOlay.userChoice;if(r&&r.outcome==='accepted'){lsS('de-kuruldu','1');ayarIsaretle('kuruldu')}}catch(e){}kurOlay=null;kurDugmesi();return}
  const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
- pencere(`<h2>Uygulamayı yükle</h2><p class="k" style="margin:0">${ios?'Safari’de alttaki Paylaş düğmesine (kare ve yukarı ok) dokun, sonra “Ana Ekrana Ekle”yi seç.':'Tarayıcının menüsünden (⋮) “Uygulamayı yükle” veya “Ana ekrana ekle” seçeneğini kullan. Windows’ta adres çubuğundaki yükle simgesine de tıklayabilirsin.'}</p><div class="alt"><button class="btn ikinci" onclick="lsS('de-kuruldu','1');pencereKapat();if(BEN)ciz()">Yükledim</button><button class="btn" onclick="pencereKapat()">Tamam</button></div>`)}
+ pencere(`<h2>Uygulamayı yükle</h2><p class="k" style="margin:0">${ios?'Safari’de alttaki Paylaş düğmesine (kare ve yukarı ok) dokun, sonra “Ana Ekrana Ekle”yi seç.':'Tarayıcının menüsünden (⋮) “Uygulamayı yükle” veya “Ana ekrana ekle” seçeneğini kullan. Windows’ta adres çubuğundaki yükle simgesine de tıklayabilirsin.'}</p><div class="alt"><button class="btn ikinci" onclick="lsS('de-kuruldu','1');ayarIsaretle('kuruldu');pencereKapat();if(BEN)ciz()">Yükledim</button><button class="btn" onclick="pencereKapat()">Tamam</button></div>`)}
 
 /* ═══════════ AÇILIŞ ═══════════ */
 (async()=>{

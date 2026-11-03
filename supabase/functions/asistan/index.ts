@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════════════════
-//  Dijital Esnaf AI · "asistan" sunucu fonksiyonu (Supabase Edge Function)
+//  Digital Esnaf AI · "asistan" sunucu fonksiyonu (Supabase Edge Function)
 //  AI Asistan ve Kampanyalar bu fonksiyonla çalışır. Claude API anahtarı yalnızca burada durur,
 //  hiçbir zaman tarayıcıya gitmez.
 //
@@ -20,7 +20,7 @@ function yanit(veri: unknown, durum = 200): Response {
   });
 }
 
-const SISTEM_SORU = `Sen "Dijital Esnaf AI" uygulamasının asistanısın. Türkiye'de dükkân işleten esnafa işini yönetmede yardım ediyorsun.
+const SISTEM_SORU = `Sen "Digital Esnaf AI" uygulamasının asistanısın. Türkiye'de dükkân işleten esnafa işini yönetmede yardım ediyorsun.
 
 Nasıl cevap verirsin:
 - Her zaman Türkçe, sade ve samimi yaz. Teknik terim kullanma; kullanıcıya "sen" diye hitap et.
@@ -34,7 +34,7 @@ Nasıl cevap verirsin:
 - İşletme verisindeki "bugun" alanı bugünün tarihidir.
 - İşletme verisinde "erisim_notu" varsa ona kesinlikle uy: soran kişi mağaza müdürü ya da personeldir; ciro, kâr, gelir, gider, kasa ve satış tutarı sorularını tahmin yürütmeden, nazikçe reddet ("Bu bilgiyi görme yetkin yok; işletme sahibine sorabilirsin.") ve stok, ürünler ya da teknik servis konusunda yardım teklif et.`;
 
-const SISTEM_KAMPANYA = `Sen "Dijital Esnaf AI" uygulamasının kampanya asistanısın. Türkiye'deki bir esnafın müşterilerine gönderebileceği kampanya metinlerini hazırlıyorsun.
+const SISTEM_KAMPANYA = `Sen "Digital Esnaf AI" uygulamasının kampanya asistanısın. Türkiye'deki bir esnafın müşterilerine gönderebileceği kampanya metinlerini hazırlıyorsun.
 
 Kurallar:
 - Türkçe, samimi, kısa ve satış odaklı yaz. Kanıtlanamayan iddialardan ("en ucuz", "garantili" gibi) ve yanıltıcı ifadelerden kaçın.
