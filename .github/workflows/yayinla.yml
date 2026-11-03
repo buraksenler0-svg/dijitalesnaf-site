@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 10
     env:
       PROJE: dijitalesnaf
-      HESAP_NO: ""   # Cloudflare hesap numarası (gizli değildir; panel adresinde görünür)
+      HESAP_NO: "9d9b350b5de0f6042617172550215832"   # Cloudflare hesap numarası (gizli değildir; panel adresinde görünür)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
