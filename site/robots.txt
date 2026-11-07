@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /app/
+Disallow: /kontrol/
 Sitemap: https://digitalesnaf.com/sitemap.xml

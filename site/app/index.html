@@ -893,7 +893,7 @@ const SUPABASE_URL='https://ycpssbeotoyobpazigeg.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHNzYmVvdG95b2JwYXppZ2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzOTU2ODAsImV4cCI6MjEwODk3MTY4MH0.WmIS8jrNBdxGaxPffo1-1ctEunJp7bz7-QgGGjaT3lc';
 const KURULU=!SUPABASE_URL.startsWith('BURAYA')&&!SUPABASE_KEY.startsWith('BURAYA');
 const CALISAN_ALAN='calisan.dijitalesnaf.app';
-const SURUM='1.1';
+const SURUM='1.2';
 const YASAL_SURUM='2026-11-07';   // kullanıcının onayladığı yasal metinlerin sürümü (yasal.html yürürlük tarihi)
 
 const $=id=>document.getElementById(id);
@@ -1206,7 +1206,6 @@ async function basla(yeni){
  if(!hatirlaAcik())bosKalBasla();
  if(!location.hash.startsWith('#/'))history.replaceState(null,'','#/'+varsayilanSayfa());
  ciz();
- if(BEN.kurucu)kurucuSayacYukle();
  onaySayacBasla();
  if(yeni)pencere(`<span class="ai-ic" style="width:48px;height:48px">${ik('yildiz')}</span><h2>Hoş geldin!</h2><p class="k" style="margin:0"><b style="color:var(--yazi)">${esc(ISL.ad)}</b> için panelin hazır. 14 günlük ücretsiz deneme bugün başladı; deneme boyunca bütün özellikler açık. Önce işletme bilgilerini tamamla, sonra ilk ürününü ekle.</p><div class="bilgi-satir"><div class="b"><small>İşletme kodun</small><b class="kod-buyuk">${esc(kodGoster(ISL.kod))}</b><small>Çalışanların girişte bu kodu kullanır. Ayarlar ve Ekip sayfasında da görünür.</small></div><button type="button" class="ibtn" aria-label="İşletme kodunu kopyala" onclick="kopyala('${esc(kodGoster(ISL.kod))}')">${ik('kopya')}</button></div><div class="alt"><button class="btn" onclick="pencereKapat()">Başlayalım</button></div>`)}
 async function cikis(){try{await sb.auth.signOut({scope:'local'})}catch(e){}BEN=ROL=ISL=EKIP=OZET=SUBE_TUM=null;SUBE='';history.replaceState(null,'',location.pathname);location.reload()}
@@ -1231,10 +1230,9 @@ const MENU=[
  {k:'kampanya',ad:'Kampanyalar',ik:'megafon',rol:'ym',pro:1,ai:1,g:'yon'},
  {k:'ayarlar',ad:'Ayarlar',ik:'ayar',rol:'ympc',g:'hesap'},
  {k:'abonelik',ad:'Paket ve ödeme',ik:'odeme',rol:'y',gizli:1,g:'hesap'},
- {k:'oneri',ad:'İstek ve öneri',ik:'mesaj',rol:'ymp',g:'hesap'},
- {k:'kurucu',ad:'Kurucu paneli',ik:'tac',rol:'k',g:'hesap'}];
+ {k:'oneri',ad:'İstek ve öneri',ik:'mesaj',rol:'ymp',g:'hesap'}];
 // Süre dolunca yalnızca bu sayfalar açık kalır
-const ACIK_KALAN=['abonelik','oneri','kurucu'];
+const ACIK_KALAN=['abonelik','oneri'];
 /* ---------- Görevler ---------- */
 const ROL_AD={yonetici:'Yönetici',mudur:'Mağaza müdürü',personel:'Personel',calisan:'Teknik servis'};
 const ROL_HARF={yonetici:'y',mudur:'m',personel:'p',calisan:'c'};
@@ -1256,10 +1254,10 @@ function menuHtml(liste,s,dugme){let son=null,h='';const bas=liste.length>6;
   h+=dugme?`<button type="button" class="men${m.k===s?' on':''}" data-k="${m.k}" onclick="git('${m.k}')">${ic}</button>`
    :`<a href="#/${m.k}" class="men${m.k===s?' on':''}"${m.k===s?' aria-current="page"':''}>${ic}</a>`}
  return h}
-const menuRozet=m=>m.pro&&!proMu()?'<span class="rozet pro">PRO</span>':m.k==='kurucu'&&KR_SAYAC?`<span class="sayac">${KR_SAYAC}</span>`:m.k==='onaylar'&&ONAY_SAYI?`<span class="sayac${yonMu()?'':' notr'}">${ONAY_SAYI}</span>`:'';
+const menuRozet=m=>m.pro&&!proMu()?'<span class="rozet pro">PRO</span>':m.k==='onaylar'&&ONAY_SAYI?`<span class="sayac${yonMu()?'':' notr'}">${ONAY_SAYI}</span>`:'';
 const varsayilanSayfa=()=>ROL==='calisan'?'servis':!yonMu()||aboneMu()?'panel':'abonelik';
 const sayfaAdi=()=>{const k=(location.hash.match(/^#\/([a-z]+)/)||[])[1];const m=MENU.find(x=>x.k===k);return m&&izinli(m)?k:varsayilanSayfa()};
-addEventListener('hashchange',()=>{if(BEN&&location.hash.startsWith('#/')){ozetHata=false;ciz()}});
+addEventListener('hashchange',()=>{if(/^#\/kurucu/.test(location.hash)){location.replace('/kontrol/');return}if(BEN&&location.hash.startsWith('#/')){ozetHata=false;ciz()}});
 function git(k){const m=document.querySelector('.menu-sayfa');if(m)m.remove();if(location.hash==='#/'+k)ciz();else location.hash='#/'+k;window.scrollTo(0,0)}
 const basHarf=t=>esc(String(t||'?').trim().charAt(0).toLocaleUpperCase('tr-TR')||'?');
 const isletmeKisa=()=>{const p=String(ISL.ad||'').trim().split(/\s+/);return esc(((p[0]||'')[0]||'')+((p[1]||'')[0]||'')).toLocaleUpperCase('tr-TR')||'DE'};
@@ -1326,7 +1324,6 @@ function bildirimler(){const L=[];if(!BEN||!ISL)return L;const o=OZET;
  if(o&&o.hazir&&servisSektor())L.push({ik:'anahtar',r:'turkuaz',a:`${o.hazir} cihaz teslime hazır`,b:'Müşteriye haber verebilirsin',k:'servis',f:'Hazır'});
  if(yonMu())for(const p of yaklasanOdemeler(3))L.push({ik:'takvim',r:p.gun<0?'kirmizi':'sari',a:`${p.ad} ${p.gun<0?'ödemesi gecikti':p.gun===0?'bugün ödenecek':p.gun+' gün sonra ödenecek'}`,b:TL(p.tutar),k:'kasa'});
  if(yonMu()&&!ISL.ucretsiz&&kalanGun()<=3)L.push({ik:'odeme',r:'sari',a:`${denemede()?'Deneme süren':'Aboneliğin'} ${kalanGun()<=0?'bugün bitiyor':kalanGun()+' gün sonra bitiyor'}`,b:'Kesintisiz devam etmek için ödemeni bildir',k:'abonelik'});
- if(BEN.kurucu&&KR_SAYAC)L.push({ik:'tac',r:'turkuaz',a:`Kurucu paneli: ${KR_SAYAC} yeni`,b:'Bekleyen talep ve öneriler',k:'kurucu'});
  return L}
 function bildirimAc(btn){const L=bildirimler();
  acilirAc(btn,`<p class="bas">Bildirimler</p>${L.length?L.map((x,i)=>`<button type="button" data-i="${i}" onclick="bildirimGit(+this.dataset.i)"><span class="uyari-ik ${x.r}">${ik(x.ik)}</span><span class="b">${esc(x.a)}<small>${esc(x.b)}</small></span></button>`).join(''):`<div class="bos"><span class="uyari-ik">${ik('ok')}</span>Şu an ilgilenmen gereken bir şey yok.</div>`}`,340)}
@@ -1415,7 +1412,7 @@ SAYFA.panel=()=>{if(ekipMi())return ekipPanel();
  <div class="gb-dugmeler"><button type="button" class="btn ana" onclick="git('satis')">${ik('arti')}Satış yap</button>${kameraVar()?`<button type="button" class="btn ikinci" onclick="barkodOku(taramaSonuc)">${ik('barkod')}Barkod / IMEI tara</button>`:''}${sv?`<button type="button" class="btn ikinci" onclick="servisYeni()">${ik('arti')}Servis kaydı</button>`:`<button type="button" class="btn ikinci" onclick="urunAc()">${ik('arti')}Ürün ekle</button>`}${!kameraVar()?`<button type="button" class="btn ikinci" onclick="giderAc()">${ik('fis')}Gider yaz</button>`:''}</div></div>
  ${!ISL.ucretsiz&&kalanGun()<=3?`<div class="uyari-serit">${ik('uyari')}<div class="b"><b>${denemede()?'Deneme süren':'Aboneliğin'} ${kalanGun()<=0?'bugün bitiyor':kalanGun()+' gün sonra bitiyor'}.</b> Kesintisiz devam etmek için paketini seçip ödemeni bildir.</div><button type="button" class="btn kucuk" onclick="git('abonelik')">Paket ve ödeme</button></div>`:''}
  ${ONAY_SAYI?`<div class="onay-serit"><span class="ai-ic">${ik('onay')}</span><div class="b"><b>${ONAY_SAYI} işlem onayını bekliyor.</b> Müdür ve personelin satış, stok ve cihaz alımları sen onaylayınca gerçekleşir.</div><button type="button" class="btn kucuk" onclick="git('onaylar')">İncele</button></div>`:''}
- ${BEN.kurucu&&KR_SAYAC&&KR.ozet&&!KR.ozet.hata?`<div class="kurucu-serit"><span class="ai-ic">${ik('tac')}</span><div class="b"><b style="color:var(--yazi)">Kurucu paneli</b><br>${+KR.ozet.bekleyen_talep||0} bekleyen talep · ${+KR.ozet.okunmamis_oneri||0} yeni öneri</div><button type="button" class="btn kucuk" onclick="git('kurucu')">Aç</button></div>`:''}
+ 
  ${telSorulur()&&!BEN.tel&&!telSorma()?`<div class="onay-serit tel-serit"><span class="ai-ic">${ik('telefon')}</span><div class="b"><b>Artık cep telefonunla giriş yapabilirsin.</b> Numaranı ekle; girişte e-posta yazman gerekmesin.</div><button type="button" class="btn kucuk" onclick="telAc()">Numaramı ekle</button><button type="button" class="ibtn" aria-label="Hatırlatmayı kapat" onclick="telSormaKapat()">${ik('kapat')}</button></div>`:''}
  ${bitti?'':`<section class="kart baslarken" aria-label="Başlarken"><div class="bl-ust"><b>Başlarken</b><span class="bl-sayi">${n}/${adimlar.length}</span><span class="bl-cubuk" role="progressbar" aria-label="Tamamlanan adımlar" aria-valuemin="0" aria-valuemax="${adimlar.length}" aria-valuenow="${n}"><i style="width:${Math.round(n/adimlar.length*100)}%"></i></span></div>
  <div class="bl-adimlar">${adimlar.filter(x=>!x.ok).map(x=>`<button type="button" class="bl-adim" title="${esc(x.a+': '+x.b)}" onclick="${x.k?`git('${x.k}')`:'kur()'}">${esc(x.c)}${ik('sag')}</button>`).join('')}</div></section>`}
@@ -2827,92 +2824,8 @@ async function moKarar(onay){const b=$(onay?'moEvet':'moHayir'),bit=bekle(b,onay
 // Açık olan sayfanın menü bağlantısına yeniden dokununca sayfa tazelenir
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#/"]');if(a&&BEN&&a.getAttribute('href')===location.hash&&!e.defaultPrevented){if(location.hash==='#/onaylar')ONAY_LISTE=null;ciz()}});
 
-/* ---------- Kurucu paneli (yalnızca kurucu) ---------- */
-let KR={sekme:'ozet',ozet:null,isletmeler:null,talepler:null,oneriler:null,ayar:null,ara:''},KR_SAYAC=0,KR_HEDEF=null;const KR_YUK={};
-const KR_RPC={ozet:'kurucu_ozet',isletmeler:'kurucu_isletmeler',talepler:'kurucu_talepler',oneriler:'kurucu_oneriler',ayar:'kurucu_ayar'};
-function krSayacHesapla(){const o=KR.ozet;KR_SAYAC=o&&!o.hata?(+o.bekleyen_talep||0)+(+o.okunmamis_oneri||0):0}
-function menuSayacGuncelle(){document.querySelectorAll('a.men[href="#/kurucu"],button.men[data-k="kurucu"]').forEach(a=>{let e=a.querySelector('.sayac');if(!KR_SAYAC){if(e)e.remove();return}if(!e){e=document.createElement('span');e.className='sayac';a.appendChild(e)}e.textContent=KR_SAYAC})}
-async function krGetir(keys){const yap=keys.filter(k=>!KR[k]&&!KR_YUK[k]);if(!yap.length)return false;yap.forEach(k=>KR_YUK[k]=1);
- const r=await Promise.all(yap.map(k=>sb.rpc(KR_RPC[k]).then(x=>x,e=>({error:e}))));
- yap.forEach((k,i)=>{const x=r[i]||{};KR_YUK[k]=0;KR[k]=x.error?{hata:x.error.message||String(x.error)}:(x.data??(k==='ozet'||k==='ayar'?{}:[]))});
- krSayacHesapla();return true}
-async function kurucuSayacYukle(){await krGetir(['ozet']);menuSayacGuncelle();if(sayfaAdi()==='panel')ciz()}
-function kurucuYenile(){KR.ozet=KR.isletmeler=KR.talepler=KR.oneriler=KR.ayar=null;ciz()}
-SONRA.kurucu=async()=>{const t=KR.sekme,k=['ozet',...(t==='ozet'?['talepler','oneriler']:[t])];if(await krGetir(k)&&sayfaAdi()==='kurucu')ciz()};
-const krYukleniyor='<section class="kart"><p class="k" style="margin:0">Yükleniyor…</p></section>';
-const krHata=x=>`<section class="kart"><p class="hata">${esc(hataTR(x.hata))}</p><button type="button" class="btn ikinci kucuk" style="margin-top:10px" onclick="kurucuYenile()">Tekrar dene</button></section>`;
-SAYFA.kurucu=()=>{const o=KR.ozet&&!KR.ozet.hata?KR.ozet:null,t=KR.sekme;
- const sek=[['ozet','Özet',0],['isletmeler','İşletmeler',0],['talepler','Talepler',o?+o.bekleyen_talep:0],['oneriler','Öneriler',o?+o.okunmamis_oneri:0],['ayar','Ayarlar',0]];
- const icerik={ozet:krOzet,isletmeler:krIsletmeler,talepler:krTalepler,oneriler:krOneriler,ayar:krAyar}[t]();
- return `<div class="sayfa-bas"><div class="b"><h1>Kurucu paneli</h1><p>Bütün işletmeler, ödemeler, talepler ve öneriler. Bu sayfayı yalnızca sen görürsün.</p></div><button type="button" class="btn ikinci kucuk" onclick="kurucuYenile()">${ik('yenile')}Yenile</button></div>
- <div class="sekme-sira" role="tablist" aria-label="Kurucu bölümleri">${sek.map(([k,a,n])=>`<button type="button" role="tab" aria-selected="${t===k}" class="${t===k?'on':''}" onclick="KR.sekme='${k}';ciz()">${a}${n?`<span class="sayac">${n}</span>`:''}</button>`).join('')}</div>
- ${icerik}`};
-function krOzet(){const o=KR.ozet;if(!o)return krYukleniyor;if(o.hata)return krHata(o);
- const kp=(a,b,c)=>`<div class="kart kpi"><span>${a}</span><b>${b}</b><em>${c}</em></div>`;
- const bek=Array.isArray(KR.talepler)?KR.talepler.filter(t=>t.durum==='bekliyor'):[],yeni=Array.isArray(KR.oneriler)?KR.oneriler.filter(x=>!x.okundu):[];
- const tumu=(k,n)=>n>3?`<button type="button" class="btn ikinci kucuk" onclick="KR.sekme='${k}';ciz()">Tümü (${n})</button>`:'';
- return `<section class="izgara" aria-label="Özet">${kp('İşletme',o.isletme,`${o.bu_hafta_yeni} yeni (son 7 gün)`)}${kp('Denemede',o.denemede,'14 günlük ücretsiz deneme')}${kp('Ödeme yapan',o.odeyen,'Aboneliği ödenmiş')}${kp('Süresi dolan',o.suresi_dolan,'Ödeme bekleniyor')}${kp('Aylık gelir',fiyatYaz(o.aylik_gelir),'Ödenmiş aboneliklerden')}${kp('Paketler',`${o.standart} · ${o.pro}`,'Standart · Pro')}</section>
- <section class="kart"><div class="sayfa-bas"><div class="b"><h2>Bekleyen talepler</h2></div>${tumu('talepler',bek.length)}</div>${!KR.talepler?'<p class="k">Yükleniyor…</p>':bek.length?bek.slice(0,3).map(krTalepSatir).join(''):'<p class="k" style="margin:8px 0 0">Bekleyen talep yok.</p>'}</section>
- <section class="kart"><div class="sayfa-bas"><div class="b"><h2>Yeni öneriler</h2></div>${tumu('oneriler',yeni.length)}</div>${!KR.oneriler?'<p class="k">Yükleniyor…</p>':yeni.length?yeni.slice(0,3).map(krOneriSatir).join(''):'<p class="k" style="margin:8px 0 0">Okunmamış öneri yok.</p>'}</section>`}
-const krKalan=d=>Math.round((new Date(String(d).slice(0,10)+'T12:00:00')-new Date(bugun()+'T12:00:00'))/864e5);
-function krDurum(i){if(i.ucretsiz)return '<span style="color:var(--basari)">Ücretsiz</span>';const g=krKalan(i.bitis);
- if(!i.abone)return `<span style="color:var(--tehlike)">Süresi doldu (${tarihKisa(i.bitis)})</span>`;
- return i.odeme_bitis?`Ödendi · bitiş ${tarihKisa(i.bitis)}`:`Deneme · ${g>0?g+' gün kaldı':'bugün son gün'}`}
-function krIsletmeler(){const L=KR.isletmeler;if(!L)return krYukleniyor;if(L.hata)return krHata(L);
- return `<section class="kart"><div class="alan"><label for="krAra" class="gizli-etiket">İşletme ara</label><input id="krAra" type="search" placeholder="İşletme, kod, sahip ya da e-posta ara" value="${esc(KR.ara)}" oninput="KR.ara=this.value;krListeCiz()"></div><div id="krListe">${krListeHtml()}</div></section>`}
-function krListeHtml(){const q=ascii(KR.ara),L=(Array.isArray(KR.isletmeler)?KR.isletmeler:[]).filter(i=>!q||ascii([i.ad,i.kod,i.sahip,i.eposta,i.telefon].join(' ')).includes(q));
- if(!L.length)return '<p class="k" style="margin:12px 0 0">Kayıt bulunamadı.</p>';
- return L.map(i=>`<div class="liste-satir"><div class="b"><b>${esc(i.ad)} <span class="rozet ${i.plan==='pro'?'pro':'soluk'}">${i.plan==='pro'?'PRO':'STANDART'}</span>${i.bekleyen_talep?`<span class="rozet sari">${i.bekleyen_talep} talep</span>`:''}</b><span>${esc(kodGoster(i.kod))} · ${esc(i.sahip||'—')} · ${esc(i.eposta||'')}${i.telefon?' · '+esc(i.telefon):''}</span><small>${krDurum(i)} · Kayıt ${tarihKisa(i.created_at)} · ${+i.uye_sayisi||0} kişi · ${+i.sube_sayisi||1} şube · AI bu ay ${+i.ai_bu_ay||0} soru</small></div><div class="islem"><button type="button" class="btn ikinci kucuk" data-id="${esc(i.id)}" onclick="krYonet(this.dataset.id)">Yönet</button></div></div>`).join('')}
-function krListeCiz(){const e=$('krListe');if(e)e.innerHTML=krListeHtml()}
-function krYonet(id){const i=(KR.isletmeler||[]).find(x=>x.id===id);if(!i)return;KR_HEDEF={id};
- pencere(`<h2>${esc(i.ad)}</h2><p class="k" style="margin:0">${esc(i.kod)} · ${esc(i.sahip||'')} · ${esc(i.eposta||'')}<br>Paket: <b style="color:var(--yazi)">${i.plan==='pro'?'Pro':'Standart'}</b> · ${krDurum(i)}</p>
- <div class="islem-izgara">
-  <button class="btn" onclick="krIslem('odeme',1,this)">${ik('odeme')}1 ay ödeme ekle</button>
-  <button class="btn ikinci" onclick="krIslem('deneme',7,this)">Denemeyi 7 gün uzat</button>
-  <button class="btn ikinci" onclick="krIslem('${i.plan==='pro'?'standart':'pro'}',null,this)">${i.plan==='pro'?'Standart’a çevir':'Pro’ya çevir'}</button>
-  <button class="btn ikinci" onclick="krIslem('ucretsiz',null,this)">${i.ucretsiz?'Ücretsizi kaldır':'Ücretsiz yap'}</button>
- </div><p class="k" style="margin:0;font-size:13px">“1 ay ödeme ekle” aboneliği bugünden ya da süre bitiminden itibaren 1 ay uzatır.${i.plan==='pro'&&+i.sube_sayisi>1?` Bu işletmenin ${+i.sube_sayisi} şubesi var; Standart’a çevrilirse sınırı aşan şubeler kapanır (kayıtları silinmez).`:''}</p>
- <div class="alt"><button class="btn ikinci" onclick="pencereKapat()">Kapat</button></div>`)}
-async function krIslem(islem,deger,btn){const h=KR_HEDEF;if(!h)return;const bit=bekle(btn,'…');const {error}=await sb.rpc('kurucu_isletme_islem',{p_id:h.id,p_islem:islem,p_deger:deger});bit();
- if(error){bildir(hataTR(error.message));return}pencereKapat();bildir('Kaydedildi');KR.isletmeler=KR.ozet=null;SUBE_TUM=null;OZET=null;await benimTazele();ciz()}
+/* Kontrol Merkezi artık ayrı sayfada: /kontrol/ */
 async function benimTazele(){try{const {data}=await sb.rpc('benim');if(data){BEN=data;ISL=data.isletme;subeHazirla()}}catch(e){}}
-const TUR_AD=t=>t.tur==='pro'?'Pro’ya geçiş talebi':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart');
-function krTalepSatir(t){return `<div class="liste-satir${t.durum==='bekliyor'?' yeni':''}"><div class="b"><b>${esc(t.isletme)} <span class="k" style="font-weight:500">${esc(kodGoster(t.kod))}</span></b><span>${TUR_AD(t)} · <b style="color:var(--yazi)">${fiyatYaz(t.tutar)}</b></span><small>${tarihSaat(t.created_at)} · ${esc(t.gonderen||'')} ${esc(t.eposta||'')}</small>${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div><div class="islem">${t.durum==='bekliyor'?`<button type="button" class="btn kucuk" data-id="${esc(t.id)}" onclick="krTalepSor(this.dataset.id,true)">${ik('ok')}Onayla</button><button type="button" class="btn tehlike kucuk" data-id="${esc(t.id)}" onclick="krTalepSor(this.dataset.id,false)">Reddet</button>`:talepDurum(t)}</div></div>`}
-function krTalepler(){const L=KR.talepler;if(!L)return krYukleniyor;if(L.hata)return krHata(L);return `<section class="kart">${L.length?L.map(krTalepSatir).join(''):'<p class="k" style="margin:0">Henüz talep yok.</p>'}</section>`}
-function krTalepSor(id,onay){const t=(KR.talepler||[]).find(x=>x.id===id);if(!t)return;KR_HEDEF={id,onay};
- pencere(`<h2>${onay?'Talebi onayla':'Talebi reddet'}</h2><p class="k" style="margin:0"><b style="color:var(--yazi)">${esc(t.isletme)}</b> · ${TUR_AD(t)} · ${fiyatYaz(t.tutar)}</p><p style="margin:0">${onay?(t.tur==='pro'?'Onaylarsan işletme hemen Pro pakete geçer.':'Onaylarsan aboneliği 1 ay uzar'+(t.plan==='pro'?' ve paketi Pro olur.':'.')):'Reddedersen işletmenin paketi değişmez.'}</p>${onay?'<p class="k" style="margin:0;font-size:13px">Ödemenin hesabına geçtiğinden emin ol.</p>':''}<div class="alt"><button class="btn ikinci" onclick="pencereKapat()">Vazgeç</button><button class="btn${onay?'':' tehlike'}" id="krTBtn" onclick="krTalepSonuc()">${onay?'Onayla':'Reddet'}</button></div>`)}
-async function krTalepSonuc(){const h=KR_HEDEF;if(!h)return;const bit=bekle($('krTBtn'),'…');const {error}=await sb.rpc('kurucu_talep_sonuc',{p_id:h.id,p_onay:h.onay});bit();
- if(error){bildir(hataTR(error.message));return}pencereKapat();bildir(h.onay?'Onaylandı':'Reddedildi');KR.talepler=KR.ozet=KR.isletmeler=null;await benimTazele();ciz()}
-function krOneriSatir(o){return `<div class="liste-satir${o.okundu?'':' yeni'}"><div class="b"><b>${esc(o.isletme)} <span class="k" style="font-weight:500">${esc(kodGoster(o.kod))}</span></b><small>${tarihSaat(o.created_at)} · ${esc(o.gonderen||'')} ${esc(o.eposta||'')}</small><div class="metin-kutu">${esc(o.metin)}</div></div><div class="islem">${o.okundu?'<span class="rozet soluk">Okundu</span>':`<button type="button" class="btn ikinci kucuk" data-id="${esc(o.id)}" onclick="krOkundu(this.dataset.id,this)">${ik('ok')}Okundu</button>`}</div></div>`}
-function krOneriler(){const L=KR.oneriler;if(!L)return krYukleniyor;if(L.hata)return krHata(L);return `<section class="kart">${L.length?L.map(krOneriSatir).join(''):'<p class="k" style="margin:0">Henüz öneri gelmedi.</p>'}</section>`}
-async function krOkundu(id,btn){const bit=bekle(btn,'…');const {error}=await sb.rpc('kurucu_oneri_okundu',{p_id:id,p_okundu:true});bit();if(error){bildir(hataTR(error.message));return}
- const o=(KR.oneriler||[]).find(x=>x.id===id);if(o)o.okundu=true;if(KR.ozet&&!KR.ozet.hata)KR.ozet.okunmamis_oneri=Math.max(0,(+KR.ozet.okunmamis_oneri||0)-1);krSayacHesapla();ciz()}
-function krAyar(){const a=KR.ayar;if(!a)return krYukleniyor;if(a.hata)return krHata(a);
- return `<section class="kart"><h2>Fiyatlar, sınırlar ve ödeme bilgileri</h2><p class="k" style="margin:4px 0 14px">Fiyatlar kayıt ekranında ve Pro geçişinde görünür. AI hakkı, işletme başına aylık soru sayısıdır; ödeme yapılmamış (deneme süresindeki) işletmeler en fazla "AI hakkı · deneme" kadar sorabilir. Günlük toplam sınır, bütün işletmelerin bir günde sorabileceği soru sayısıdır ve beklenmedik AI masrafına karşı sigortadır. Şube sınırı, pakette açılabilecek şube sayısıdır; Pro’da boş bırakırsan sınırsız olur. Ödeme bilgileri müşterinin "Paket ve ödeme" ekranında görünür.</p>
- <form class="form" novalidate onsubmit="event.preventDefault();krAyarKaydet()">
-  <div class="alan"><label for="krFS">Standart (TL/ay)</label><input id="krFS" type="number" min="1" step="1" inputmode="decimal" value="${esc(a.fiyat_standart)}"></div>
-  <div class="alan"><label for="krFP">Pro (TL/ay)</label><input id="krFP" type="number" min="1" step="1" inputmode="decimal" value="${esc(a.fiyat_pro)}"></div>
-  <div class="alan"><label for="krAS">AI hakkı · Standart</label><input id="krAS" type="number" min="0" step="1" inputmode="numeric" value="${esc(a.ai_standart)}"></div>
-  <div class="alan"><label for="krAP">AI hakkı · Pro</label><input id="krAP" type="number" min="0" step="1" inputmode="numeric" value="${esc(a.ai_pro)}"></div>
-  <div class="alan"><label for="krAD">AI hakkı · deneme</label><input id="krAD" type="number" min="0" step="1" inputmode="numeric" value="${esc(a.ai_deneme??'')}" placeholder="Boş: paketin hakkı"></div>
-  <div class="alan"><label for="krAG">Günlük toplam AI sınırı</label><input id="krAG" type="number" min="1" step="1" inputmode="numeric" value="${esc(a.ai_gunluk??'')}" placeholder="Boş: sınırsız"></div>
-  <div class="alan"><label for="krSS">Şube sınırı · Standart</label><input id="krSS" type="number" min="1" step="1" inputmode="numeric" value="${esc(a.sube_standart??1)}"></div>
-  <div class="alan"><label for="krSP">Şube sınırı · Pro</label><input id="krSP" type="number" min="1" step="1" inputmode="numeric" value="${esc(a.sube_pro??'')}" placeholder="Boş = sınırsız"></div>
-  <div class="alan" style="grid-column:1/-1"><label for="krIban">IBAN</label><input id="krIban" autocapitalize="characters" spellcheck="false" placeholder="TR00 0000 0000 0000 0000 0000 00" value="${esc(ibanYaz(a.iban||''))}"></div>
-  <div class="alan"><label for="krAlici">Alıcı adı</label><input id="krAlici" value="${esc(a.alici||'')}" placeholder="Hesap sahibinin adı soyadı"></div>
-  <div class="alan"><label for="krBanka">Banka</label><input id="krBanka" value="${esc(a.banka||'')}" placeholder="Örn. Ziraat Bankası"></div>
-  <div class="alan"><label for="krIlet">İletişim (WhatsApp veya telefon)</label><input id="krIlet" type="tel" value="${esc(a.iletisim||'')}" placeholder="0555 123 45 67"></div>
-  <div class="alan" style="grid-column:1/-1"><label for="krNot">Ödeme notu (isteğe bağlı)</label><input id="krNot" value="${esc(a.odeme_notu||'')}" placeholder="Örn. Açıklamaya işletme kodunuzu yazın"></div>
-  <button class="btn" id="krABtn" type="submit">${ik('ok')}Kaydet</button></form></section>`}
-async function krAyarKaydet(){const n=(i,tam)=>{const v=$(i).value.trim().replace(',','.');return v===''?null:tam?Math.round(+v):+v};
- const p={fiyat_standart:n('krFS'),fiyat_pro:n('krFP'),ai_standart:n('krAS',1),ai_pro:n('krAP',1),ai_deneme:$('krAD')?n('krAD',1):undefined,ai_gunluk:$('krAG')?n('krAG',1):undefined,sube_standart:n('krSS',1),sube_pro:n('krSP',1),iban:$('krIban').value,alici:$('krAlici').value,banka:$('krBanka').value,iletisim:$('krIlet').value,odeme_notu:$('krNot').value};
- if(!(p.fiyat_standart>0)||!(p.fiyat_pro>0)){bildir('Fiyatlar sıfırdan büyük olmalı');return}
- if((p.ai_standart!=null&&p.ai_standart<0)||(p.ai_pro!=null&&p.ai_pro<0)||(p.ai_deneme!=null&&p.ai_deneme<0)){bildir('Soru hakkı eksi olamaz');return}
- if(p.ai_gunluk!=null&&!(p.ai_gunluk>=1)){bildir('Günlük AI sınırı en az 1 olmalı');return}
- if((p.sube_standart!=null&&!(p.sube_standart>=1))||(p.sube_pro!=null&&!(p.sube_pro>=1))){bildir('Şube sınırı en az 1 olmalı');return}
- const ib=String(p.iban||'').replace(/\s/g,'').toUpperCase();if(ib&&!/^TR\d{24}$/.test(ib)){bildir('IBAN TR ile başlamalı ve 26 karakter olmalı');$('krIban').focus();return}
- const bit=bekle($('krABtn'),'Kaydediliyor…');const {data,error}=await sb.rpc('kurucu_ayar_kaydet',{p});bit();
- if(error){bildir(hataTR(error.message));return}KR.ayar=data;FIYAT={standart:+data.fiyat_standart,pro:+data.fiyat_pro};ODEME=null;AI_KALAN=null;await benimTazele();bildir('Kaydedildi');ciz()}
 
 /* ---------- Uygulamayı yükle ---------- */
 let kurOlay=null;
@@ -2926,6 +2839,7 @@ async function kur(){if(kurOlay){kurOlay.prompt();try{const r=await kurOlay.user
 /* ═══════════ AÇILIŞ ═══════════ */
 (async()=>{
  if('serviceWorker' in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+ if(/^#\/kurucu/.test(location.hash)){location.replace('/kontrol/');return}
  const ara=(()=>{try{return new URLSearchParams(location.search)}catch(e){return new Map()}})(),onayKodu=ara.get('onay'),servisKod=ara.get('servis');
  if(onayKodu){musteriOnaySayfa(onayKodu);return}
  if(servisKod){servisDurumSayfa(servisKod,ara.get('takip'));return}

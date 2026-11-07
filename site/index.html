@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script>(function(){var l=location,q=l.search,h=l.hash,a='/app/';
- if(/[?&](servis|takip|onay|giris|kayit|code|error)(=|&|$)/.test(q)||/(access_token|refresh_token|error_description|type=)/.test(h)){l.replace(a+q+h);return}
+ if(/[?&](servis|takip|onay|giris|kayit|code|error)(=|&|$)/.test(q)||/(access_token|refresh_token|error_description|type=)/.test(h)||/^#\//.test(h)){l.replace(a+q+h);return}
  if(/[?&]tanitim(=|&|$)/.test(q)||h==='#tanitim')return;
  try{if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true){l.replace(a);return}}catch(e){}
  try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^sb-.+-auth-token$/.test(k)&&localStorage.getItem(k)){l.replace(a);return}}}catch(e){}

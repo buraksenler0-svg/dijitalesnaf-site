@@ -5,3 +5,5 @@
   Permissions-Policy: camera=(self), microphone=(self), geolocation=()
 /sw.js
   Cache-Control: no-cache
+/kontrol/*
+  X-Robots-Tag: noindex, nofollow

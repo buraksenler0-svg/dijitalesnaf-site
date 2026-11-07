@@ -15,6 +15,8 @@
 --      yapabilir, müşterilere verilmiş servis bağlantıları ve çalışan giriş bağlantıları çalışmaya devam eder.
 --    * İşletme sahipleri cep telefonu numarası ve şifreyle giriş yapar; e-postayla giriş de çalışmaya devam eder.
 --      Bir numara yalnızca bir hesapta kayıtlı olabilir. Art arda yanlış şifre denemeleri sınırlanır.
+--    * Kontrol Merkezi'nde (kurucu paneli, digitalesnaf.com/kontrol) işletme sahibinin cep numarası ve
+--      son giriş zamanı da görünür.
 -- ═══════════════════════════════════════════════════════════════════════════════════════════
 
 -- 0) Ön koşul: Güncelleme 5 kurulu olmalı -------------------------------------------------------------
@@ -352,7 +354,37 @@ begin
   return 'Tamam';
 end $$;
 
--- 8) Fonksiyon izinleri ---------------------------------------------------------------------------------
+-- 8) Kontrol Merkezi: işletme listesinde sahibin giriş numarası ve son giriş zamanı ---------------------
+drop function if exists kurucu_isletmeler();
+create or replace function kurucu_isletmeler()
+returns table (id uuid, ad text, kod text, sektor text, plan text, ucretsiz boolean, deneme_bitis date, odeme_bitis date,
+               bitis date, abone boolean, created_at timestamptz, sahip text, eposta text, telefon text,
+               uye_sayisi int, ai_bu_ay int, bekleyen_talep int, sube_sayisi int, sahip_tel text, son_giris timestamptz)
+language plpgsql stable security definer set search_path = public as $$
+#variable_conflict use_column
+begin
+  if not kurucu_mu() then raise exception 'Yetki yok'; end if;
+  return query
+  select i.id, i.ad, i.kod, i.sektor, i.plan, i.ucretsiz, i.deneme_bitis, i.odeme_bitis,
+         greatest(i.deneme_bitis, coalesce(i.odeme_bitis, i.deneme_bitis)),
+         i.ucretsiz or current_date <= greatest(i.deneme_bitis, coalesce(i.odeme_bitis, i.deneme_bitis)),
+         i.created_at,
+         (select coalesce(u.ad, '') from uye u where u.isletme_id = i.id and u.rol = 'yonetici' order by u.created_at limit 1),
+         (select au.email::text from uye u join auth.users au on au.id = u.user_id
+          where u.isletme_id = i.id and u.rol = 'yonetici' order by u.created_at limit 1),
+         coalesce(i.ayarlar->'site'->>'telefon', ''),
+         (select count(*)::int from uye u where u.isletme_id = i.id and u.aktif),
+         coalesce((select k.sayi from ai_kullanim k where k.isletme_id = i.id and k.ay = date_trunc('month', current_date)::date), 0),
+         (select count(*)::int from talep t where t.isletme_id = i.id and t.durum = 'bekliyor'),
+         (select count(*)::int from sube sb where sb.isletme_id = i.id and sb.aktif),
+         (select h.tel from uye u join hesap_tel h on h.user_id = u.user_id
+          where u.isletme_id = i.id and u.rol = 'yonetici' order by u.created_at limit 1),
+         (select max(au.last_sign_in_at) from uye u join auth.users au on au.id = u.user_id where u.isletme_id = i.id)
+  from isletme i
+  order by i.created_at desc;
+end $$;
+
+-- 9) Fonksiyon izinleri ---------------------------------------------------------------------------------
 revoke all on function yeni_isletme_kodu(), istemci_ip(), kurucu_yap_kod(text) from public, anon, authenticated;
 revoke all on function tel_duzelt(text) from public, anon, authenticated;
 revoke all on function kod_coz(text), tel_giris(text, text), tel_kayitli(text), servis_sorgula(text, text, text),
@@ -361,6 +393,8 @@ grant execute on function kod_coz(text), tel_giris(text, text), tel_kayitli(text
   vitrin(text), isletme_site(text) to anon, authenticated;
 revoke all on function isletme_olustur(text, text, text, text, text, text), tel_kaydet(text), benim() from public, anon;
 grant execute on function isletme_olustur(text, text, text, text, text, text), tel_kaydet(text), benim() to authenticated;
+revoke all on function kurucu_isletmeler() from public, anon;
+grant execute on function kurucu_isletmeler() to authenticated;
 
 notify pgrst, 'reload schema';
 

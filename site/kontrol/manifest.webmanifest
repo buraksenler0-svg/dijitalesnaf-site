@@ -1,0 +1,18 @@
+{
+  "name": "Digital Esnaf Kontrol Merkezi",
+  "short_name": "DE Kontrol",
+  "description": "Kurucu paneli: işletmeler, ödemeler, öneriler ve ayarlar.",
+  "lang": "tr",
+  "id": "/kontrol/",
+  "start_url": "/kontrol/",
+  "scope": "/kontrol/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0E4851",
+  "theme_color": "#0E4851",
+  "icons": [
+    { "src": "/kontrol/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/kontrol/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/kontrol/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
