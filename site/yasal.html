@@ -64,7 +64,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 </head>
 <body>
 <div class="kap">
- <header class="ust"><a class="logo" href="/" aria-label="Digital Esnaf AI ana sayfa"><svg width="34" height="30" viewBox="0 6 100 88" aria-hidden="true" style="color:var(--logo)"><path d="M69.7 63.7L82 63.5L90.1 66.7L62.2 84L49.3 76.1ZM25.4 47.9L25.4 74.3L9.9 83.9L9.9 57.8ZM48.3 16L73.8 33.7L63.5 39.8L38.3 23.8L38 17.3Z" fill="currentColor" stroke="currentColor" stroke-width="19.8" stroke-linejoin="round"/></svg><b>Digital Esnaf</b></a><a class="don" href="/">Uygulamaya dön<span>&nbsp;→</span></a></header>
+ <header class="ust"><a class="logo" href="/?tanitim" aria-label="Digital Esnaf ana sayfa"><svg width="34" height="30" viewBox="0 6 100 88" aria-hidden="true" style="color:var(--logo)"><path d="M69.7 63.7L82 63.5L90.1 66.7L62.2 84L49.3 76.1ZM25.4 47.9L25.4 74.3L9.9 83.9L9.9 57.8ZM48.3 16L73.8 33.7L63.5 39.8L38.3 23.8L38 17.3Z" fill="currentColor" stroke="currentColor" stroke-width="19.8" stroke-linejoin="round"/></svg><b>Digital Esnaf</b></a><a class="don" href="/app/">Uygulamaya dön<span>&nbsp;→</span></a></header>
  <main>
   <h1 id="icindekiler">Yasal metinler</h1>
   <p class="giris">Digital Esnaf AI hizmetinin kullanımına, kişisel verilere ve ödemelere ilişkin metinler. Yürürlük tarihi 7 Kasım 2026. Soruların için <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a>.</p>
@@ -89,7 +89,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 </tr>
 <tr>
 <td>İletişim</td>
-<td>E-posta, telefon, işletme ve şube adresi</td>
+<td>Cep telefonu (girişte de kullanılır), e-posta, işletme ve şube adresi</td>
 <td>İşletme sahibi</td>
 </tr>
 <tr>
@@ -99,7 +99,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 </tr>
 <tr>
 <td>İşlem güvenliği</td>
-<td>Giriş kayıtları, IP adresi, oturum ve tarayıcı bilgisi</td>
+<td>Giriş kayıtları ve başarısız giriş denemeleri, IP adresi, oturum ve tarayıcı bilgisi</td>
 <td>Bütün kullanıcılar</td>
 </tr>
 <tr>
@@ -129,7 +129,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 </thead>
 <tbody>
 <tr>
-<td>Hesap açma, giriş ve hizmetin sunulması</td>
+<td>Hesap açma, giriş (cep telefonu ya da e-posta ve şifreyle) ve hizmetin sunulması</td>
 <td>Sözleşmenin kurulması ve ifası (c)</td>
 </tr>
 <tr>
@@ -171,6 +171,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 <li>Hesap kapanınca işletme kayıtları 90 gün içinde silinir ya da anonim hale getirilir.</li>
 <li>Ödeme ve fatura kayıtları ilgili mevzuattaki süreler boyunca saklanır (ör. Vergi Usul Kanunu 5 yıl, Türk Ticaret Kanunu 10 yıl).</li>
 <li>Güvenlik kayıtları en fazla 2 yıl saklanır.</li>
+<li>Art arda yanlış şifre denemelerini sınırlamak için tutulan deneme kayıtları (telefon numarası ve IP adresi) 1 gün sonra silinir.</li>
 </ul>
 <h3>Hakların (KVKK m.11)</h3>
 <ol>
@@ -210,7 +211,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 </tr>
 <tr>
 <td>Giriş kolaylıkları</td>
-<td>Son kullanılan e-posta, işletme kodu, kullanıcı adı</td>
+<td>Son kullanılan cep telefonu, e-posta, işletme kodu, kullanıcı adı</td>
 <td>Tarayıcı verilerini silince</td>
 </tr>
 <tr>
@@ -244,6 +245,7 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 <ul>
 <li>Şifreler geri çözülemeyecek biçimde saklanır; kimse, Digital Esnaf AI de dahil, şifreni göremez.</li>
 <li>Bütün bağlantılar şifrelidir (HTTPS).</li>
+<li>Art arda yanlış şifre denemeleri sınırlanır; bir telefon numarasıyla kısa sürede çok sayıda yanlış deneme yapılırsa telefonla giriş bir süre durdurulur.</li>
 <li>Her işletme yalnızca kendi kayıtlarını görebilir; bu kural ekranda değil, veritabanının kendisinde uygulanır.</li>
 <li>Müdür, personel ve teknik servis yalnızca görevinin gerektirdiği bilgileri görür; müdür ve personel ciro, kâr ve gelir-gider bilgisine erişemez.</li>
 <li>İmzalı formlar ve hasar fotoğrafları herkese kapalı klasörde durur ve yalnızca 5 dakika geçerli bağlantıyla açılır.</li>
@@ -256,7 +258,8 @@ table.cift td:first-child{color:var(--etiket);font-weight:600;width:34%;backgrou
 <p><strong>1. Konu.</strong> Sağlayıcı, Abone'ye internet üzerinden stok, satış, kasa, muhasebe, teknik servis, ekip, cihaz alımı ve yapay zekâ asistanı hizmetini abonelik usulüyle sunar.</p>
 <p><strong>2. Hesap ve güvenlik.</strong></p>
 <ul>
-<li>Abone kayıtta doğru bilgi verir ve bilgileri güncel tutar.</li>
+<li>Abone kayıtta doğru bilgi verir ve bilgileri güncel tutar. İşletme sahibi kayıtta yazdığı cep telefonu numarası ya da e-posta adresi ve şifresiyle giriş yapar; bir numara yalnızca bir hesapta kayıtlı olabilir.</li>
+<li>İşletme kodunu Sağlayıcı verir (DE ile başlayan ve 5 rakamla biten kod); Abone kodu seçemez. Ekip üyeleri bu kodla giriş yapar.</li>
 <li>Şifrelerin gizli tutulması Abone'nin ve ekip üyelerinin sorumluluğundadır. Abone, açtığı ekip hesaplarıyla yapılan işlemlerden sorumludur.</li>
 <li>Yetkisiz bir kullanım fark edilirse Abone şifresini değiştirir ve <a href="mailto:destek@digitalesnaf.com">destek@digitalesnaf.com</a> adresine hemen bildirir.</li>
 </ul>
