@@ -52,6 +52,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--vurgu);box-shadow:0 0
 .rozet.pro{background:var(--yan);color:#fff}.rozet.std{background:var(--kart3);color:var(--etiket);border:1px solid var(--cizgi)}.rozet.ucr{background:var(--basari-zemin);color:var(--basari)}
 .rozet.sari{background:var(--sari-zemin);color:var(--sari-metin)}.rozet.kirmizi{background:var(--tehlike-zemin);color:var(--tehlike)}.rozet.yesil{background:var(--basari-zemin);color:var(--basari)}.rozet.gri{background:var(--kart3);color:var(--soluk)}
 .sayac{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--sari);color:#2B1D00;font-size:11.5px;font-weight:800;display:inline-grid;place-items:center;margin-left:auto}
+.km-uyari{display:flex!important;align-items:center;gap:6px;margin-top:4px;color:var(--sari-metin)!important;font-weight:700;font-size:13px}.km-uyari .ik{width:16px;height:16px;flex:none}
 .durum-ok{color:var(--basari);font-weight:700}.durum-uyari{color:var(--sari-metin);font-weight:700}.durum-bitti{color:var(--tehlike);font-weight:700}
 /* giriş */
 #giris{min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:radial-gradient(900px 500px at 80% -10%,#D5EEEA 0%,rgba(213,238,234,0) 70%),var(--bg)}
@@ -341,7 +342,7 @@ SAYFA.genel=()=>{const o=D.ozet;
  const yak=L.filter(i=>!i.ucretsiz&&i.abone&&kalanGun(i.bitis)<=7).sort((a,b)=>String(a.bitis).localeCompare(String(b.bitis)));
  return bas('Genel bakış',`${tarihUzun()} · ${guncelYazi()}`)+`<section class="km-kpiler" aria-label="Özet">
   ${kpi('magaza','İşletme',sayi(o.isletme),`${sayi(o.bu_hafta_yeni)} yeni · son 7 gün`)}
-  ${kpi('takvim','Denemede',sayi(o.denemede),'14 günlük ücretsiz deneme')}
+  ${kpi('takvim','Denemede',sayi(o.denemede),D.ayar&&!D.ayar.hata&&D.ayar.deneme_gun?`Yeni kayıtlar ${D.ayar.deneme_gun} gün dener`:'Ücretsiz deneme süresinde')}
   ${kpi('ok','Ödeyen',sayi(o.odeyen),'Aboneliği ödenmiş')}
   ${kpi('uyari','Süresi dolan',sayi(o.suresi_dolan),'Ödeme bekleniyor')}
   ${kpi('kasa','Aylık gelir',para(o.aylik_gelir),'Ödenmiş aboneliklerden')}
@@ -427,18 +428,21 @@ async function islem(t,deger,btn){const id=HEDEF;if(!id)return;const bit=bekle(b
  if(r.error){bildir(hataTR(r.error.message));return}bildir('Kaydedildi');await yukle(['ozet','isletmeler']);if(!$('perde').hidden&&HEDEF===id)yonet(id)}
 
 /* ── ödemeler (ödeme bildirimleri ve Pro’ya geçiş talepleri) ── */
-const TUR_AD=t=>t.tur==='pro'?'Pro’ya geçiş talebi':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart');
+const TUR_AD=t=>t.tur==='pro'?'Pro’ya geçiş · fark':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart');
+// Fark talebi yalnızca ödenmiş Standart ayı devam ederken açılır; onaydan önce ay bittiyse uyar
+const farkUyari=t=>{if(t.tur!=='pro'||t.durum!=='bekliyor')return '';const i=dizi(D.isletmeler).find(x=>x.id===t.isletme_id);if(!i||i.ucretsiz)return '';
+ return i.odeme_bitis&&String(i.odeme_bitis).slice(0,10)>=yerelGun(new Date())?'':`<small class="km-uyari">${ik('uyari')}Ödenmiş Standart ayı devam etmiyor; fark yerine Pro’nun aylık ücreti gerekir.</small>`};
 const talepDurum=t=>t.durum==='onaylandi'?`<span class="rozet yesil">Onaylandı${t.sonuc_zaman?' · '+tarih(t.sonuc_zaman):''}</span>`:`<span class="rozet kirmizi">Reddedildi${t.sonuc_zaman?' · '+tarih(t.sonuc_zaman):''}</span>`;
-function talepSatir(t){return `<div class="satir km-talep${t.durum==='bekliyor'?' yeni':''}" data-id="${esc(t.id)}"><div class="b"><b>${esc(t.isletme)} <span class="kod">${esc(kodGoster(t.kod))}</span></b><span>${TUR_AD(t)} · <b style="color:var(--yazi)">${para(t.tutar)}</b></span><small>${tarihSaat(t.created_at)}${t.gonderen?' · '+esc(t.gonderen):''}${t.eposta?' · '+esc(t.eposta):''}</small>${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div>
+function talepSatir(t){return `<div class="satir km-talep${t.durum==='bekliyor'?' yeni':''}" data-id="${esc(t.id)}"><div class="b"><b>${esc(t.isletme)} <span class="kod">${esc(kodGoster(t.kod))}</span></b><span>${TUR_AD(t)} · <b style="color:var(--yazi)">${para(t.tutar)}</b></span><small>${tarihSaat(t.created_at)}${t.gonderen?' · '+esc(t.gonderen):''}${t.eposta?' · '+esc(t.eposta):''}</small>${farkUyari(t)}${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div>
  <div class="islem">${t.durum==='bekliyor'?`<button type="button" class="btn kucuk km-onayla" data-id="${esc(t.id)}" onclick="talepSor(this.dataset.id,true)">${ik('ok')}Onayla</button><button type="button" class="btn tehlike kucuk km-reddet" data-id="${esc(t.id)}" onclick="talepSor(this.dataset.id,false)">Reddet</button>`:talepDurum(t)}</div></div>`}
 SAYFA.odemeler=()=>{const T=D.talepler;if(!T)return bas('Ödemeler',guncelYazi())+yukleniyorHtml;if(T.hata)return bas('Ödemeler','')+hataHtml(T.hata);
  const bek=T.filter(t=>t.durum==='bekliyor'),L=F.odeme==='bekleyen'?bek:T;
  return bas('Ödemeler',`Ödeme bildirimleri ve Pro’ya geçiş talepleri · ${guncelYazi()}`)+`<section class="kart"><div class="filtre" role="group" aria-label="Talepler">${[['bekleyen','Bekleyen',bek.length],['tumu','Tümü',T.length]].map(([f,a,n])=>`<button type="button" data-f="${f}" class="${F.odeme===f?'on':''}" aria-pressed="${F.odeme===f}" onclick="F.odeme='${f}';ciz()">${a} <i>${n}</i></button>`).join('')}</div>
  <div class="liste" style="margin-top:8px">${L.length?L.map(talepSatir).join(''):`<p class="bos">${F.odeme==='bekleyen'?'Bekleyen ödeme bildirimi yok.':'Henüz ödeme bildirimi ya da talep yok.'}</p>`}</div>
- <p class="k" style="margin-top:12px;font-size:13px">Onaylamadan önce ödemenin hesabınıza geçtiğinden emin olun. Ödeme bildirimi onaylanınca abonelik 1 ay uzar; Pro’ya geçiş talebi onaylanınca işletme hemen Pro olur.</p></section>`};
+ <p class="k" style="margin-top:12px;font-size:13px">Onaylamadan önce ödemenin hesabınıza geçtiğinden emin olun. Ödeme bildirimi onaylanınca abonelik 1 ay uzar; fark talebi onaylanınca işletme hemen Pro olur, bitiş tarihi değişmez.</p></section>`};
 function talepSor(id,onay){const t=dizi(D.talepler).find(x=>x.id===id);if(!t)return;
  pencere(`<h2>${onay?'Talebi onayla':'Talebi reddet'}</h2><p class="k"><b style="color:var(--yazi)">${esc(t.isletme)}</b> · ${TUR_AD(t)} · ${para(t.tutar)}</p>
- <p>${onay?(t.tur==='pro'?'Onaylarsanız işletme hemen Pro pakete geçer.':'Onaylarsanız aboneliği 1 ay uzar'+(t.plan==='pro'?' ve paketi Pro olur.':'.')):'Reddederseniz işletmenin paketi değişmez.'}</p>${onay?'<p class="k" style="font-size:13px">Ödemenin hesabınıza geçtiğinden emin olun.</p>':''}
+ ${onay?farkUyari(t):''}<p>${onay?(t.tur==='pro'?'Onaylarsanız işletme hemen Pro pakete geçer; abonelik bitiş tarihi değişmez.':'Onaylarsanız aboneliği 1 ay uzar'+(t.plan==='pro'?' ve paketi Pro olur.':'.')):'Reddederseniz işletmenin paketi değişmez.'}</p>${onay?'<p class="k" style="font-size:13px">Ödemenin hesabınıza geçtiğinden emin olun.</p>':''}
  <div class="alt"><button type="button" class="btn ikinci" onclick="pencereKapat()">Vazgeç</button><button type="button" class="btn${onay?'':' tehlike'}" id="kmTBtn" onclick="talepSonuc()">${onay?'Onayla':'Reddet'}</button></div>`);TALEP={id,onay}}
 async function talepSonuc(){const t=TALEP;if(!t)return;const bit=bekle($('kmTBtn'),'');const r=await rpcDene('kurucu_talep_sonuc',{p_id:t.id,p_onay:t.onay});bit();
  if(r.error){bildir(hataTR(r.error.message));return}pencereKapat();bildir(t.onay?'Onaylandı':'Reddedildi');await yukle(['ozet','talepler','isletmeler'])}
@@ -458,7 +462,7 @@ const ibanYaz=s=>String(s||'').replace(/\s/g,'').toUpperCase().replace(/(.{4})/g
 SAYFA.ayarlar=()=>{const a=D.ayar;if(!a)return bas('Ayarlar',guncelYazi())+yukleniyorHtml;if(a.hata)return bas('Ayarlar','')+hataHtml(a.hata);
  const al=(id,et,v,ek)=>`<div class="alan${ek&&ek.tam?' tam':''}"><label for="${id}">${et}</label><input id="${id}" ${ek&&ek.tip?`type="${ek.tip}"`:'type="number" min="0" step="1" inputmode="numeric"'} value="${esc(v??'')}"${ek&&ek.ph?` placeholder="${esc(ek.ph)}"`:''}${ek&&ek.attr?' '+ek.attr:''}>${ek&&ek.not?`<small>${ek.not}</small>`:''}</div>`;
  return bas('Ayarlar','Fiyatlar, sınırlar ve ödeme bilgileri; bütün işletmeler için geçerli')+`<form class="kart" novalidate onsubmit="event.preventDefault();ayarKaydet()">
-  <div class="ayar-grup"><h2>Paket fiyatları</h2><p>Kayıt ekranında, tanıtım sayfasında ve “Paket ve ödeme”de görünür.</p><div class="form-izgara">${al('krFS','Standart (TL/ay)',a.fiyat_standart,{attr:'min="1"'})}${al('krFP','Pro (TL/ay)',a.fiyat_pro,{attr:'min="1"'})}</div></div>
+  <div class="ayar-grup"><h2>Paket fiyatları ve deneme</h2><p>Kayıt ekranında, tanıtım sayfasında ve “Paket ve ödeme”de görünür. Ödenmiş Standart ayı devam eden işletme Pro’ya yalnızca aradaki farkı ödeyerek geçer; denemedeki ya da süresi dolmuş işletme Pro’nun aylık ücretini öder.</p><div class="form-izgara">${al('krFS','Standart (TL/ay)',a.fiyat_standart,{attr:'min="1"'})}${al('krFP','Pro (TL/ay)',a.fiyat_pro,{attr:'min="1"'})}${al('krDG','Deneme süresi (gün)',a.deneme_gun??7,{attr:'min="1" max="60"',not:'Yeni kayıtlar için geçerli; denemesi süren işletmeler etkilenmez.'})}</div></div>
   <div class="ayar-grup"><h2>AI asistan</h2><p>İşletme başına aylık soru hakkı. Deneme süresindeki işletmeler en fazla “deneme” hakkı kadar sorar. Günlük toplam sınır, beklenmedik AI masrafına karşı sigortadır.</p><div class="form-izgara">${al('krAS','Aylık hak · Standart',a.ai_standart)}${al('krAP','Aylık hak · Pro',a.ai_pro)}${al('krAD','Deneme hakkı',a.ai_deneme,{ph:'Boş: paketin hakkı'})}${al('krAG','Günlük toplam sınır',a.ai_gunluk,{ph:'Boş: sınırsız',attr:'min="1"'})}</div></div>
   <div class="ayar-grup"><h2>Şube sınırları</h2><p>Pakette açılabilecek şube sayısı; Pro’da boş bırakırsanız sınırsız olur.</p><div class="form-izgara">${al('krSS','Standart',a.sube_standart??1,{attr:'min="1"'})}${al('krSP','Pro',a.sube_pro,{ph:'Boş: sınırsız',attr:'min="1"'})}</div></div>
   <div class="ayar-grup"><h2>Ödeme bilgileri</h2><p>Müşterinin “Paket ve ödeme” ekranında görünür.</p><div class="form-izgara">
@@ -467,8 +471,9 @@ SAYFA.ayarlar=()=>{const a=D.ayar;if(!a)return bas('Ayarlar',guncelYazi())+yukle
    ${al('krIlet','İletişim (WhatsApp veya telefon)',a.iletisim||'',{tip:'tel',ph:'0555 123 45 67'})}${al('krNot','Ödeme notu (isteğe bağlı)',a.odeme_notu||'',{tip:'text',ph:'Örn. Açıklamaya işletme kodunuzu yazın'})}</div></div>
   <div style="margin-top:18px;display:flex;gap:10px"><button class="btn" id="krABtn" type="submit">${ik('ok')}Kaydet</button></div></form>`};
 async function ayarKaydet(){const n=(i,tam)=>{const v=$(i).value.trim().replace(',','.');return v===''?null:tam?Math.round(+v):+v};
- const p={fiyat_standart:n('krFS'),fiyat_pro:n('krFP'),ai_standart:n('krAS',1),ai_pro:n('krAP',1),ai_deneme:n('krAD',1),ai_gunluk:n('krAG',1),sube_standart:n('krSS',1),sube_pro:n('krSP',1),iban:$('krIban').value,alici:$('krAlici').value,banka:$('krBanka').value,iletisim:$('krIlet').value,odeme_notu:$('krNot').value};
+ const p={fiyat_standart:n('krFS'),fiyat_pro:n('krFP'),deneme_gun:n('krDG',1),ai_standart:n('krAS',1),ai_pro:n('krAP',1),ai_deneme:n('krAD',1),ai_gunluk:n('krAG',1),sube_standart:n('krSS',1),sube_pro:n('krSP',1),iban:$('krIban').value,alici:$('krAlici').value,banka:$('krBanka').value,iletisim:$('krIlet').value,odeme_notu:$('krNot').value};
  if(!(p.fiyat_standart>0)||!(p.fiyat_pro>0)){bildir('Fiyatlar sıfırdan büyük olmalı');return}
+ if(!(p.deneme_gun>=1&&p.deneme_gun<=60)){bildir('Deneme süresi 1 ile 60 gün arasında olmalı');$('krDG').focus();return}
  if((p.ai_standart!=null&&p.ai_standart<0)||(p.ai_pro!=null&&p.ai_pro<0)||(p.ai_deneme!=null&&p.ai_deneme<0)){bildir('Soru hakkı eksi olamaz');return}
  if(p.ai_gunluk!=null&&!(p.ai_gunluk>=1)){bildir('Günlük AI sınırı en az 1 olmalı');return}
  if((p.sube_standart!=null&&!(p.sube_standart>=1))||(p.sube_pro!=null&&!(p.sube_pro>=1))){bildir('Şube sınırı en az 1 olmalı');return}

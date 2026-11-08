@@ -893,8 +893,8 @@ const SUPABASE_URL='https://ycpssbeotoyobpazigeg.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcHNzYmVvdG95b2JwYXppZ2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzOTU2ODAsImV4cCI6MjEwODk3MTY4MH0.WmIS8jrNBdxGaxPffo1-1ctEunJp7bz7-QgGGjaT3lc';
 const KURULU=!SUPABASE_URL.startsWith('BURAYA')&&!SUPABASE_KEY.startsWith('BURAYA');
 const CALISAN_ALAN='calisan.dijitalesnaf.app';
-const SURUM='1.2';
-const YASAL_SURUM='2026-11-07';   // kullanıcının onayladığı yasal metinlerin sürümü (yasal.html yürürlük tarihi)
+const SURUM='1.3';
+const YASAL_SURUM='2026-11-08';   // kullanıcının onayladığı yasal metinlerin sürümü (yasal.html yürürlük tarihi)
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -996,17 +996,18 @@ function istemci(h){sbTemizle(h?window.sessionStorage:window.localStorage);retur
 let sb=null,BEN=null,ROL=null,ISL=null,EKIP=null,OZET=null,HESAP={eposta:'',meta:{}};
 // Yasal metin bağlantısı (yeni sekmede açılır)
 const YASAL=(h,a)=>`<a href="/yasal.html${h?'#'+h:''}" target="_blank" rel="noopener">${a}</a>`;
-let FIYAT={standart:229,pro:399};
+let FIYAT={standart:229,pro:399,deneme_gun:7};
+const denemeGun=()=>+FIYAT.deneme_gun||7;
 const fiyatYaz=n=>(+n||0).toLocaleString('tr-TR',{maximumFractionDigits:2})+' TL';
 const proMu=()=>!BEN||BEN.pro!==false;
 const aboneMu=()=>!BEN||BEN.abone!==false;
 const paketAd=()=>proMu()?'Pro':'Standart';
 const tarihKisa=d=>d?new Date(String(d).length<=10?d+'T12:00:00':d).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}):'';
 const tarihSaat=d=>d?new Date(d).toLocaleString('tr-TR',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
-async function fiyatGetir(){try{const {data}=await sb.rpc('fiyatlar');if(data&&data.standart!=null)FIYAT={standart:+data.standart,pro:+data.pro}}catch(e){}}
-function fiyatTazele(){document.querySelectorAll('[data-fiyat]').forEach(e=>e.textContent=fiyatYaz(FIYAT[e.dataset.fiyat]))}
+async function fiyatGetir(){try{const {data}=await sb.rpc('fiyatlar');if(data&&data.standart!=null)FIYAT={standart:+data.standart,pro:+data.pro,deneme_gun:+data.deneme_gun||FIYAT.deneme_gun||7}}catch(e){}}
+function fiyatTazele(){document.querySelectorAll('[data-fiyat]').forEach(e=>e.textContent=fiyatYaz(FIYAT[e.dataset.fiyat]));document.querySelectorAll('[data-deneme]').forEach(e=>e.textContent=denemeGun())}
 const PAKET_OZET={standart:'Stok, kasa, satış, muhasebe, teknik servis ve AI asistan · tek şube',pro:'Standart’taki her şey + çoklu şube, ekip (çalışan hesapları), raporlar ve kampanyalar'};
-const paketKartlari=sec=>`<fieldset class="paketler"><legend class="etiket">Paket</legend>${['standart','pro'].map(k=>`<label class="paket${sec===k?' on':''}"><input type="radio" name="kPlan" value="${k}"${sec===k?' checked':''} onchange="paketSec(this)"><span class="b"><b>${k==='pro'?'Pro <span class="rozet pro">PRO</span>':'Standart'}</b><span class="fiyat"><span data-fiyat="${k}">${fiyatYaz(FIYAT[k])}</span>/ay <small>(14 gün ücretsiz deneme)</small></span><span class="ozet">${PAKET_OZET[k]}</span></span></label>`).join('')}</fieldset>`;
+const paketKartlari=sec=>`<fieldset class="paketler"><legend class="etiket">Paket</legend>${['standart','pro'].map(k=>`<label class="paket${sec===k?' on':''}"><input type="radio" name="kPlan" value="${k}"${sec===k?' checked':''} onchange="paketSec(this)"><span class="b"><b>${k==='pro'?'Pro <span class="rozet pro">PRO</span>':'Standart'}</b><span class="fiyat"><span data-fiyat="${k}">${fiyatYaz(FIYAT[k])}</span>/ay <small>(<span data-deneme>${denemeGun()}</span> gün ücretsiz deneme)</small></span><span class="ozet">${PAKET_OZET[k]}</span></span></label>`).join('')}</fieldset>`;
 function paketSec(i){document.querySelectorAll('.paket').forEach(l=>l.classList.toggle('on',l.contains(i)))}
 const seciliPaket=()=>{const r=document.querySelector('input[name=kPlan]:checked');return r?r.value:'standart'};
 
@@ -1107,7 +1108,7 @@ function isletmeAlanlari(on={}){return `<div class="alan"><label for="kIsl">İş
  <p class="k g-kod-not">${ik('magaza')}<span>İşletme kodunuzu sistem verir (örneğin <b>DE48213</b>). Çalışanlarınız girişte bu kodu kullanır.</span></p>`}
 const bekleyen=()=>{try{return JSON.parse(lsG('de-bekleyen')||'{}')||{}}catch(e){return{}}};
 function kayitHtml(){const b=bekleyen();
- return `<div class="g-baslik"><h2 id="gBaslik">14 gün ücretsiz deneyin</h2><p>Kredi kartı gerekmez. Deneme boyunca bütün özellikler açık.</p></div>
+ return `<div class="g-baslik"><h2 id="gBaslik"><span data-deneme>${denemeGun()}</span> gün ücretsiz deneyin</h2><p>Kredi kartı gerekmez. Deneme boyunca bütün özellikler açık.</p></div>
  <form id="kForm" class="g-form" novalidate onsubmit="event.preventDefault();kayitOl()">
  <div class="alan"><label for="kTel">Cep telefonu</label>${telAlani('kTel',b.tel)}<small>Giriş yaparken bu numarayı kullanacaksınız.</small></div>
  <div class="alan"><label for="kAd">Adınız soyadınız</label><input id="kAd" autocomplete="name" placeholder="Örn. Burak Şen" value="${esc(b.yad||'')}"></div>
@@ -1162,7 +1163,7 @@ async function isletmeOlustur(g){let r=await rpcDene('isletme_olustur',g);
 function isletmeKurCiz(user,hata){
  $('yukleniyor').hidden=true;$('uygulama').hidden=true;$('giris').hidden=false;
  const b=bekleyen(),m=(user&&user.user_metadata)||{};
- $('giris').innerHTML=solPanel()+`<section class="g-sag" aria-labelledby="gBaslik"><div class="g-kutu"><div class="g-baslik"><h2 id="gBaslik">İşletmenizi tanımlayın</h2><p>Son adım: işletmenizin bilgilerini yazın, paneliniz hazırlansın. 14 günlük deneme bu adımla başlar.</p></div>
+ $('giris').innerHTML=solPanel()+`<section class="g-sag" aria-labelledby="gBaslik"><div class="g-kutu"><div class="g-baslik"><h2 id="gBaslik">İşletmenizi tanımlayın</h2><p>Son adım: işletmenizin bilgilerini yazın, paneliniz hazırlansın. Ücretsiz deneme bu adımla başlar.</p></div>
  <form class="g-form" novalidate onsubmit="event.preventDefault();isletmeKur()"><div class="alan"><label for="kTel">Cep telefonu</label>${telAlani('kTel',b.tel||telDuzelt(m.tel))}<small>Giriş yaparken bu numarayı kullanacaksınız.</small></div>${isletmeAlanlari(b)}<p class="hata" id="kHata" role="alert">${esc(hata||'')}</p><button class="btn g-btn" id="kBtn" type="submit">İşletmeyi oluştur</button></form>
  <div class="g-alt"><button type="button" class="metin-dugme" onclick="cikis()">Çıkış yap</button></div></div></section>`;
  window.__yad=b.yad||m.ad||'';
@@ -1198,7 +1199,7 @@ async function basla(yeni){
   return isletmeKurCiz(u&&u.user)}
  BEN=data;ROL=data.rol;ISL=data.isletme;subeHazirla();
  try{const {data:o}=await sb.auth.getSession();const u=o&&o.session&&o.session.user;HESAP={eposta:(u&&u.email)||'',meta:(u&&u.user_metadata)||{}}}catch(e){HESAP={eposta:'',meta:{}}}
- if(data.fiyat&&data.fiyat.standart!=null)FIYAT={standart:+data.fiyat.standart,pro:+data.fiyat.pro};
+ if(data.fiyat&&data.fiyat.standart!=null)FIYAT={...FIYAT,standart:+data.fiyat.standart,pro:+data.fiyat.pro};
  if(ROL!=='yonetici'&&(data.abone===false||data.pro===false)){
   try{await sb.auth.signOut({scope:'local'})}catch(e){}BEN=ROL=ISL=null;girisMod='giris';girisCiz();const h=$('gHata');
   if(h)h.textContent=data.abone===false?'İşletmenin aboneliği sona erdi. Yöneticinizle görüşün.':'İşletmenin paketi çalışan hesaplarını kapsamıyor. Yöneticinizle görüşün.';return}
@@ -1207,7 +1208,7 @@ async function basla(yeni){
  if(!location.hash.startsWith('#/'))history.replaceState(null,'','#/'+varsayilanSayfa());
  ciz();
  onaySayacBasla();
- if(yeni)pencere(`<span class="ai-ic" style="width:48px;height:48px">${ik('yildiz')}</span><h2>Hoş geldin!</h2><p class="k" style="margin:0"><b style="color:var(--yazi)">${esc(ISL.ad)}</b> için panelin hazır. 14 günlük ücretsiz deneme bugün başladı; deneme boyunca bütün özellikler açık. Önce işletme bilgilerini tamamla, sonra ilk ürününü ekle.</p><div class="bilgi-satir"><div class="b"><small>İşletme kodun</small><b class="kod-buyuk">${esc(kodGoster(ISL.kod))}</b><small>Çalışanların girişte bu kodu kullanır. Ayarlar ve Ekip sayfasında da görünür.</small></div><button type="button" class="ibtn" aria-label="İşletme kodunu kopyala" onclick="kopyala('${esc(kodGoster(ISL.kod))}')">${ik('kopya')}</button></div><div class="alt"><button class="btn" onclick="pencereKapat()">Başlayalım</button></div>`)}
+ if(yeni)pencere(`<span class="ai-ic" style="width:48px;height:48px">${ik('yildiz')}</span><h2>Hoş geldin!</h2><p class="k" style="margin:0"><b style="color:var(--yazi)">${esc(ISL.ad)}</b> için panelin hazır. Ücretsiz denemen bugün başladı ve <b style="color:var(--yazi)">${tarihKisa(ISL.deneme_bitis)}</b> tarihine kadar sürüyor; deneme boyunca bütün özellikler açık. Önce işletme bilgilerini tamamla, sonra ilk ürününü ekle.</p><div class="bilgi-satir"><div class="b"><small>İşletme kodun</small><b class="kod-buyuk">${esc(kodGoster(ISL.kod))}</b><small>Çalışanların girişte bu kodu kullanır. Ayarlar ve Ekip sayfasında da görünür.</small></div><button type="button" class="ibtn" aria-label="İşletme kodunu kopyala" onclick="kopyala('${esc(kodGoster(ISL.kod))}')">${ik('kopya')}</button></div><div class="alt"><button class="btn" onclick="pencereKapat()">Başlayalım</button></div>`)}
 async function cikis(){try{await sb.auth.signOut({scope:'local'})}catch(e){}BEN=ROL=ISL=EKIP=OZET=SUBE_TUM=null;SUBE='';history.replaceState(null,'',location.pathname);location.reload()}
 const BOSTA_DK=30;let bostaT=0,sonIs=Date.now(),bostaOk=false;
 function bostaSifirla(){sonIs=Date.now();clearTimeout(bostaT);bostaT=setTimeout(()=>{bildir('Uzun süre işlem yapılmadığı için çıkış yapıldı');setTimeout(cikis,1200)},BOSTA_DK*60000)}
@@ -1553,7 +1554,7 @@ const subeSecimi=(id,sec)=>`<select id="${id}"><option value="">Bütün şubeler
 const subeDolu=()=>BEN.sube_limit!=null&&subeler().length>=+BEN.sube_limit;
 SAYFA.subeler=()=>{const akt=subeler(),kapali=(Array.isArray(SUBE_TUM)?SUBE_TUM:[]).filter(b=>!b.aktif),dolu=subeDolu(),pro=proMu();
  const satir=(b,i)=>`<div class="liste-satir"><div class="b"><b>${esc(b.ad)}${i===0&&akt.length>1?' <span class="rozet soluk">Ana şube</span>':''}${SUBE===b.id?' <span class="rozet yesil">Seçili</span>':''}</b><span>${b.adres?esc(b.adres):'Adres eklenmedi'}${b.telefon?' · '+esc(b.telefon):''}</span></div><div class="islem"><button type="button" class="btn ikinci kucuk" data-id="${esc(b.id)}" onclick="subeDuzenAc(this.dataset.id)">Düzenle</button>${akt.length>1?`<button type="button" class="btn tehlike kucuk" data-id="${esc(b.id)}" onclick="subeKapatAc(this.dataset.id)">Kapat</button>`:''}</div></div>`;
- const ekle=dolu&&!pro?`<section class="kart pro-kapi"><h2 style="font-size:20px">Yeni şube Pro pakette</h2><p class="k" style="margin:0">Standart pakette ${+BEN.sube_limit} şube var. Pro’ya geçince istediğin kadar şube açarsın; her şubenin stoku, kasası ve servisi ayrı tutulur.</p>${karsilastirHtml()}<p style="margin:0">Aradaki fark: <b>${fiyatYaz(proFark())}/ay</b></p><div><button type="button" class="btn" onclick="proGecAc()">${ik('sag')}Pro’ya geçiş talebi gönder</button></div></section>`
+ const ekle=dolu&&!pro?`<section class="kart pro-kapi"><h2 style="font-size:20px">Yeni şube Pro pakette</h2><p class="k" style="margin:0">Standart pakette ${+BEN.sube_limit} şube var. Pro’ya geçince istediğin kadar şube açarsın; her şubenin stoku, kasası ve servisi ayrı tutulur.</p>${karsilastirHtml()}${proTeklif()}</section>`
   :dolu?`<section class="kart"><h2>Şube ekle</h2><p class="k" style="margin:6px 0 0">Paketin en fazla ${+BEN.sube_limit} şubeye izin veriyor. Daha fazla şube için <a href="#/oneri" style="color:var(--vurgu-metin)">bize yaz</a>.</p></section>`
   :`<section class="kart" aria-labelledby="subeEkleBaslik"><h2 id="subeEkleBaslik">Şube ekle</h2><p class="k" style="margin:4px 0 16px">Yeni şubenin stoku, satışları, kasası ve servis kayıtları ayrı tutulur. Üstteki seçiciden şubeler arasında geçersin.</p>
  <form class="form" novalidate onsubmit="event.preventDefault();subeEkle()">
@@ -2435,15 +2436,18 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&BK){e.stopImmediatePropagati
 const PRO_ADI={ekip:'Ekip',raporlar:'Raporlar',kampanya:'Kampanyalar'};
 const PRO_OZELLIK=['Çoklu şube: her şubenin stoku, kasası ve servisi ayrı','Ekip: çalışan hesapları ve yetkiler','Raporlar: günlük, haftalık, aylık analiz','Kampanyalar: AI ile WhatsApp, Instagram ve afiş metni'];
 const proFark=()=>Math.max((+FIYAT.pro||0)-(+FIYAT.standart||0),0);
+// Standart'ı ödemiş ve ayı bitmemiş işletme farkı öder; deneme, süresi dolmuş ya da hiç ödememiş olan Pro'nun aylık ücretini öder
+const farkHakki=()=>!!(ISL&&!ISL.ucretsiz&&ISL.plan!=='pro'&&ISL.odeme_bitis&&String(ISL.odeme_bitis).slice(0,10)>=bugun());
+const proTeklif=()=>farkHakki()?`<p style="margin:0">Standart ayın bitmeden geçersen bu ay yalnızca aradaki farkı ödersin: <b>${fiyatYaz(proFark())}</b></p><div><button type="button" class="btn" onclick="proGecAc()">${ik('sag')}Pro’ya geçiş talebi gönder</button></div>`
+ :`<p style="margin:0">Pro paketi: <b>${fiyatYaz(FIYAT.pro)}/ay</b></p><div><button type="button" class="btn" onclick="odemeBildirAc('pro')">${ik('sag')}Pro’ya geç</button></div>`;
 const karsilastirHtml=()=>`<div class="karsilastir"><div><span class="k">Şu anki paketin</span><b>Standart</b><b class="sayi">${fiyatYaz(FIYAT.standart)}<span class="k" style="font-size:13px;font-family:var(--bf)"> /ay</span></b></div><div class="pro"><span class="k" style="color:var(--pro-altin)">Önerilen</span><b>Pro <span class="rozet pro">PRO</span></b><b class="sayi">${fiyatYaz(FIYAT.pro)}<span class="k" style="font-size:13px;font-family:var(--bf)"> /ay</span></b><ul>${PRO_OZELLIK.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`;
 const proKapi=k=>`<div class="sayfa-bas"><div class="b"><h1>${PRO_ADI[k]}</h1><p>Bu bölüm Pro pakette.</p></div><span class="rozet pro">PRO</span></div>
  <section class="kart pro-kapi"><h2 style="font-size:20px">Pro’ya geç, ${PRO_ADI[k].toLocaleLowerCase('tr-TR')} açılsın</h2>${karsilastirHtml()}
- <p style="margin:0">Aradaki fark: <b>${fiyatYaz(proFark())}/ay</b></p>
- <div><button type="button" class="btn" onclick="proGecAc()">${ik('sag')}Pro’ya geçiş talebi gönder</button></div></section>`;
-function proGecAc(){
+ ${proTeklif()}</section>`;
+function proGecAc(){if(!farkHakki()){odemeBildirAc('pro');return}
  pencere(`<h2>Pro pakete geçiş</h2>${karsilastirHtml()}
- <p style="margin:0">Aradaki fark: <b>${fiyatYaz(proFark())}/ay</b>. Talebin kurucuya iletilir; ödemen onaylanınca Çoklu şube, Ekip, Raporlar ve Kampanyalar hemen açılır.</p>
- <label class="onay metin"><input type="checkbox" id="pOnay"><span>Pro pakete geçmeyi ve aylık ${fiyatYaz(proFark())} farkı ödemeyi kabul ediyorum. ${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni okudum, onaylıyorum. Hizmetin ödemeden hemen sonra başlamasını kabul ediyorum ve bu nedenle cayma hakkımın bulunmadığını biliyorum.</span></label>
+ <p style="margin:0">Standart ayın <b>${tarihKisa(ISL.odeme_bitis)}</b> tarihine kadar sürüyor. Pro’ya şimdi geçmek için bu ay yalnızca aradaki farkı ödersin: <b>${fiyatYaz(proFark())}</b>. Ödemen onaylanınca Çoklu şube, Ekip, Raporlar ve Kampanyalar hemen açılır; sonraki aylarda Pro’nun aylık ücreti (${fiyatYaz(FIYAT.pro)}) geçerli olur.</p>
+ <label class="onay metin"><input type="checkbox" id="pOnay"><span>Pro pakete geçmeyi ve bu ay için ${fiyatYaz(proFark())} farkı ödemeyi kabul ediyorum. ${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni okudum, onaylıyorum. Hizmetin ödemeden hemen sonra başlamasını kabul ediyorum ve bu nedenle cayma hakkımın bulunmadığını biliyorum.</span></label>
  <div class="alan"><label for="pNot">Not (isteğe bağlı)</label><textarea id="pNot" rows="2" maxlength="500" placeholder="Örn. havaleyi yaptım, gönderen: …"></textarea></div>
  <p class="hata" id="pHata" role="alert"></p>
  <div class="alt"><button class="btn ikinci" onclick="pencereKapat()">Vazgeç</button><button class="btn" id="pBtn" onclick="proTalepGonder()">Talebi gönder</button></div>`)}
@@ -2469,15 +2473,16 @@ SAYFA.abonelik=()=>{const a=aboneMu(),pk=proMu()?'pro':'standart';
  <section class="kart"><h2>Paketin</h2>
   <div class="karsilastir" style="margin-top:14px">${['standart','pro'].map(k=>`<div class="${k==='pro'?'pro':''}"${k===pk?` style="box-shadow:inset 0 0 0 2px ${k==='pro'?'var(--pro-altin2)':'var(--vurgu-cizgi)'}"`:''}><span class="k">${k===pk?'Şu anki paketin':'&nbsp;'}</span><b>${k==='pro'?'Pro <span class="rozet pro">PRO</span>':'Standart'}</b><b class="sayi">${fiyatYaz(FIYAT[k])}<span class="k" style="font-size:13px;font-family:var(--bf)"> /ay</span></b><span class="k" style="font-size:13px">${PAKET_OZET[k]}</span></div>`).join('')}</div>
   <div class="bilgi-satir" style="margin-top:12px"><div class="b"><small>Durum</small><b style="font-size:16px">${paketDurum()}</b></div></div>
-  ${ISL.ucretsiz?'':`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn" onclick="odemeBildirAc()">${ik('odeme')}Ödeme yaptım, bildir</button>${pk==='standart'?`<button type="button" class="btn ikinci" onclick="proGecAc()">Pro’ya geç</button>`:''}</div>`}
+  ${ISL.ucretsiz?'':`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn" onclick="odemeBildirAc()">${ik('odeme')}Ödeme yaptım, bildir</button>${pk==='standart'?(farkHakki()?`<button type="button" class="btn ikinci" onclick="proGecAc()">Pro’ya geç · fark ${fiyatYaz(proFark())}</button>`:`<button type="button" class="btn ikinci" onclick="odemeBildirAc('pro')">Pro’ya geç · ${fiyatYaz(FIYAT.pro)}/ay</button>`):''}</div>`}
  </section>
  ${ISL.ucretsiz?'':`<section class="kart"><h2>Ödeme bilgileri</h2><p class="k" style="margin:4px 0 6px">Aylık ücreti bu hesaba gönderip "Ödeme yaptım, bildir" düğmesine bas. Ödemeden önce ${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni oku.</p><div>${odemeHtml()}</div></section>`}
- <section class="kart"><h2>Taleplerin</h2>${!TALEPLER?'<p class="k">Yükleniyor…</p>':!TALEPLER.length?'<p class="k" style="margin:8px 0 0">Henüz bir talep ya da ödeme bildirimi göndermedin.</p>':TALEPLER.map(t=>`<div class="liste-satir"><div class="b"><b>${t.tur==='pro'?'Pro’ya geçiş':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart')}</b><span>${fiyatYaz(t.tutar)} · ${tarihSaat(t.created_at)}</span>${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div>${talepDurum(t)}</div>`).join('')}</section>
+ <section class="kart"><h2>Taleplerin</h2>${!TALEPLER?'<p class="k">Yükleniyor…</p>':!TALEPLER.length?'<p class="k" style="margin:8px 0 0">Henüz bir talep ya da ödeme bildirimi göndermedin.</p>':TALEPLER.map(t=>`<div class="liste-satir"><div class="b"><b>${t.tur==='pro'?'Pro’ya geçiş · fark':'Ödeme bildirimi · '+(t.plan==='pro'?'Pro':'Standart')}</b><span>${fiyatYaz(t.tutar)} · ${tarihSaat(t.created_at)}</span>${t.aciklama?`<div class="metin-kutu">${esc(t.aciklama)}</div>`:''}</div>${talepDurum(t)}</div>`).join('')}</section>
  <p class="yasal-alt">${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}${YASAL('iade','İptal ve İade Koşulları')}${YASAL('kosullar','Kullanım Koşulları')}</p>`};
 SONRA.abonelik=async()=>{const is=[];if(!ODEME&&!ISL.ucretsiz)is.push(odemeYukle());if(!TALEPLER)is.push(taleplerimYukle());if(!is.length)return;await Promise.all(is);if(sayfaAdi()==='abonelik')ciz()};
-async function odemeBildirAc(){if(!ODEME)await odemeYukle();const pk=proMu()?'pro':'standart';
- pencere(`<h2>Ödeme bildir</h2><p class="k" style="margin:0">Ödemeyi aşağıdaki hesaba yaptıktan sonra bildir. Kurucu onaylayınca aboneliğin 1 ay uzar.</p>
- <fieldset class="paketler"><legend class="etiket">Hangi paket için?</legend>${['standart','pro'].map(k=>`<label class="paket${pk===k?' on':''}"><input type="radio" name="oPlan" value="${k}"${pk===k?' checked':''} onchange="paketSec(this)"><span class="b"><b>${k==='pro'?'Pro':'Standart'}</b><span class="fiyat">${fiyatYaz(FIYAT[k])}<span class="k" style="font-size:13px;font-family:var(--bf)"> /ay</span></span></span></label>`).join('')}</fieldset>
+async function odemeBildirAc(sec){if(!ODEME)await odemeYukle();const pk=sec==='pro'||sec==='standart'?sec:proMu()?'pro':'standart',proAl=sec==='pro'&&!proMu();
+ pencere(`${proAl?`<h2>Pro paketini al</h2><p class="k" style="margin:0">Pro paketi aylık <b style="color:var(--yazi)">${fiyatYaz(FIYAT.pro)}</b>. Ödemeyi aşağıdaki hesaba yaptıktan sonra bildir; kurucu onaylayınca Pro hemen açılır ve aboneliğin 1 ay uzar.</p>${karsilastirHtml()}<input type="radio" name="oPlan" value="pro" checked hidden>`
+ :`<h2>Ödeme bildir</h2><p class="k" style="margin:0">Ödemeyi aşağıdaki hesaba yaptıktan sonra bildir. Kurucu onaylayınca aboneliğin 1 ay uzar.</p>
+ <fieldset class="paketler"><legend class="etiket">Hangi paket için?</legend>${['standart','pro'].map(k=>`<label class="paket${pk===k?' on':''}"><input type="radio" name="oPlan" value="${k}"${pk===k?' checked':''} onchange="paketSec(this)"><span class="b"><b>${k==='pro'?'Pro':'Standart'}</b><span class="fiyat">${fiyatYaz(FIYAT[k])}<span class="k" style="font-size:13px;font-family:var(--bf)"> /ay</span></span></span></label>`).join('')}</fieldset>`}
  <div>${odemeHtml()}</div>
  <div class="alan"><label for="obNot">Not (isteğe bağlı)</label><textarea id="obNot" rows="2" maxlength="500" placeholder="Örn. 3 Kasım’da havale yaptım, gönderen: …"></textarea></div>
  <label class="onay metin"><input type="checkbox" id="obOnay"><span>${YASAL('on-bilgilendirme','Ön Bilgilendirme Formu')}’nu ve ${YASAL('mesafeli-satis','Mesafeli Satış Sözleşmesi')}’ni okudum, onaylıyorum. Hizmetin ödemeden hemen sonra başlamasını kabul ediyorum ve bu nedenle cayma hakkımın bulunmadığını biliyorum.</span></label>

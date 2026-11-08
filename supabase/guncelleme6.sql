@@ -176,6 +176,8 @@ declare
   k text;
   n int := 0;
   c text;
+  -- deneme süresi ayardan (Güncelleme 7: sistem.deneme_gun); ayar yoksa 7 gün. Güncellemeler hangi sırayla çalışırsa çalışsın aynı sonuç.
+  gun int := coalesce((select (to_jsonb(s)->>'deneme_gun')::int from sistem s where s.id = 1), 7);
 begin
   if auth.uid() is null then raise exception 'Önce giriş yapın'; end if;
   if coalesce(auth.jwt()->>'email', '') like '%@calisan.dijitalesnaf.app' then raise exception 'Çalışan hesabıyla işletme açılamaz'; end if;
@@ -201,8 +203,9 @@ begin
   loop
     k := yeni_isletme_kodu();
     begin
-      insert into isletme (ad, kod, sektor, plan)
-      values (trim(p_ad), k, coalesce(nullif(trim(p_sektor), ''), 'diger'), case when p_plan = 'standart' then 'standart' else 'pro' end)
+      insert into isletme (ad, kod, sektor, plan, deneme_bitis)
+      values (trim(p_ad), k, coalesce(nullif(trim(p_sektor), ''), 'diger'), case when p_plan = 'standart' then 'standart' else 'pro' end,
+              current_date + gun)
       returning * into i;
       exit;
     exception when unique_violation then
